@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Add Player</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <h3>{{team.name}}</h3>
+  <ion-row>      
+    <ion-label stacked>Number</ion-label>
+    <ion-input type="numberic" id="input" [(ngModel)]="newPlayerNumber"></ion-input>
+  </ion-row>
+  <ion-row>
+    <ion-label stacked>Name</ion-label>
+    <ion-input type="text" id="input" [(ngModel)]="newPlayerName"></ion-input>
+  </ion-row>
+  <ion-row>
+    <ion-button (click)="submit()">Submit</ion-button>
+  </ion-row>
+  <ion-row>
+    {{message}}
+  </ion-row>
+</ion-content>

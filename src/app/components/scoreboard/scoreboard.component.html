@@ -1,0 +1,38 @@
+<h3>{{gameService.awayTeam.name}}</h3>
+<h3>{{gameService.awayTeam.points}}</h3>
+<h1>TOL</h1>
+<button (click)="timeOut('away')"><h1>{{gameService.awayTeam.timeouts}}</h1></button>
+<h1>Fouls</h1>
+<h1>{{gameService.awayTeam.fouls[timerReference.period - 1]}}</h1>
+<app-timer (periodStart)="periodStartParent($event)" (timeChange)="timeChangeParent($event)"></app-timer>
+<h1 *ngIf="gameService.possArrow == gameService.awayTeam">Away</h1>
+<button (click)="jumpBall()">Possession</button>
+<h1 *ngIf="gameService.possArrow == gameService.homeTeam">Home</h1>
+<p><h3>{{gameService.homeTeam.name}}</h3>
+  <p><h3>{{gameService.homeTeam.points}}</h3>
+    <h1>TOL</h1>
+    <button (click)="timeOut('home')"><h1>{{gameService.homeTeam.timeouts}}</h1></button>
+    <h1>Fouls</h1>
+    <h1>{{gameService.homeTeam.fouls[timerReference.period - 1]}}</h1>
+    <h1>{{mostRecentLineups}}</h1>
+<!-- <ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-row>
+        </ion-row>
+        <ion-row>
+        </ion-row>
+      </ion-col>
+      <ion-col>
+
+      </ion-col>
+      <ion-col>
+        <ion-row>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content> -->
+<!-- <p>scoreboard
+</p> -->

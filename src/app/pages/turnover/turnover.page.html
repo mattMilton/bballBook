@@ -1,0 +1,55 @@
+<ion-header>
+    <ion-toolbar>
+      <ion-title>Turnover</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-row>{{gameService.awayTeam.name}}</ion-row>
+            <ion-row *ngFor="let player of gameService.awayTeam.onCourt">
+              <ion-button (click)="turnoverBy(player, gameService.awayTeam)">{{player.number}}</ion-button>
+            </ion-row>
+          </ion-col>
+          <ion-col>
+            <ion-row>{{gameService.homeTeam.name}}</ion-row>
+            <ion-row *ngFor="let player of gameService.homeTeam.onCourt">
+              <ion-button (click)="turnoverBy(player, gameService.homeTeam)">{{player.number}}</ion-button>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="player">Turnover By: {{team?.name}} Number: {{player?.number}}</ion-row>
+        <ion-row *ngIf="player"><h3>Offensive Foul?</h3><br />
+          <ion-button (click)="offensiveFoul(true)">Yes</ion-button>
+          <ion-button (click)="offensiveFoul(false)">No</ion-button> 
+        </ion-row>
+
+        <ion-row *ngIf="offensive">Offensive Foul<br />
+        <ion-button (click)="submit()">Submit</ion-button>
+
+        </ion-row>
+
+        <ion-row *ngIf="offensive == false">
+          <ion-col>
+            <h3>Stolen By?</h3>
+            <ion-row *ngFor="let player of stealerTeam?.onCourt">
+              <ion-button (click)="stolenBy(player)">{{player.number}}</ion-button>
+            </ion-row>
+            <ion-row>
+              <ion-button (click)="stolenBy(null)">Not Stolen</ion-button>
+            </ion-row>
+
+          </ion-col>
+        </ion-row>
+
+        <ion-row *ngIf="stealer">Stolen By: {{stealerTeam.name}} Number: {{stealer?.number}}</ion-row>
+        <ion-row *ngIf="stealer == null && stealerSet == true">Not Stolen</ion-row>
+        
+        <ion-row *ngIf="stealerSet">
+          <ion-button (click)="submit()">Submit</ion-button>
+        </ion-row>
+
+      </ion-grid>
+    </ion-content>

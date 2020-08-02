@@ -1,0 +1,67 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{type}} Point Field Goal Missed</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-row>{{gameService.awayTeam.name}}</ion-row>
+          <ion-row *ngFor="let player of gameService.awayTeam.onCourt">
+            <ion-button (click)="missedBy(player, gameService.awayTeam)">{{player.number}}</ion-button>
+          </ion-row>
+        </ion-col>
+        <ion-col>
+          <ion-row>{{gameService.homeTeam.name}}</ion-row>
+          <ion-row *ngFor="let player of gameService.homeTeam.onCourt">
+            <ion-button (click)="missedBy(player, gameService.homeTeam)">{{player.number}}</ion-button>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="attempter">Missed By: {{team?.name}} Number: {{attempter?.number}}</ion-row>
+      <ion-row *ngIf=(attempter)><h3>Blocked By?</h3></ion-row>
+  
+      <ion-row *ngFor="let player of blockerTeam?.onCourt">
+        <ion-button (click)="blockedBy(player)">{{player.number}}</ion-button>
+      </ion-row>
+      <ion-row *ngIf=(attempter)>
+        <ion-button (click)="blockedBy(null)">Not Blocked</ion-button>
+      </ion-row>
+
+      <ion-row *ngIf="blocker">Blocked By Number: {{blocker?.number}}</ion-row>
+      <ion-row *ngIf="blocker == null && blockerSet == true">Not Blocked</ion-row>
+
+      
+      <ion-row *ngIf="blockerSet"><h3>Rebounded By?</h3></ion-row>
+      
+      <ion-row *ngIf="blockerSet">
+        <ion-col>
+          <ion-row>{{gameService.awayTeam.name}}</ion-row>
+          <ion-row *ngFor="let player of gameService.awayTeam.onCourt">
+            <ion-button (click)="reboundedBy(player, gameService.awayTeam)">{{player.number}}</ion-button>
+          </ion-row>
+          <ion-row>
+            <ion-button (click)="reboundedBy(null, gameService.awayTeam)">{{gameService.awayTeam.name}}</ion-button>
+          </ion-row>
+        </ion-col>
+        <ion-col>
+          <ion-row>{{gameService.homeTeam.name}}</ion-row>
+          <ion-row *ngFor="let player of gameService.homeTeam.onCourt">
+            <ion-button (click)="reboundedBy(player, gameService.homeTeam)">{{player.number}}</ion-button>
+          </ion-row>
+          <ion-row>
+              <ion-button (click)="reboundedBy(null, gameService.homeTeam)">{{gameService.homeTeam.name}}</ion-button>
+            </ion-row>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="rebounder">Rebounded By: {{reboundingTeam.name}} Number: {{rebounder?.number}}</ion-row>
+      <ion-row *ngIf="rebounder == null && rebounderSet == true">Team Rebound: {{reboundingTeam.name}}</ion-row>
+      
+      <ion-row *ngIf="rebounderSet">
+        <ion-button (click)="submit()">Submit</ion-button>
+      </ion-row>
+    </ion-grid>
+  </ion-content>
+  

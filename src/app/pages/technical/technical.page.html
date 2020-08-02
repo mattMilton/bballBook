@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Technical Foul</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <p>Technical Fouls are tracked, but maximum number of technicals before ejection is not
+    enforced in the program. If rules dictate that a player is ejected after a certain number
+    of technical fouls, check the game log to determine if this threshold has been reached.
+  </p>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-row>{{gameService.awayTeam.name}}</ion-row>
+        <ion-row *ngFor="let player of gameService.awayTeam.onCourt">
+          <ion-button (click)="technical(player, gameService.awayTeam)">{{player.number}}</ion-button>
+        </ion-row>
+        <ion-row>
+          <ion-button (click)="technical(null, gameService.awayTeam)">Coach/Bench</ion-button>
+        </ion-row>
+      </ion-col>
+      <ion-col>
+        <ion-row>{{gameService.homeTeam.name}}</ion-row>
+        <ion-row *ngFor="let player of gameService.homeTeam.onCourt">
+          <ion-button (click)="technical(player, gameService.homeTeam)">{{player.number}}</ion-button>
+        </ion-row>
+        <ion-row>
+          <ion-button (click)="technical(null, gameService.homeTeam)">Coach/Bench</ion-button>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="player">Technical Foul On: {{team?.name}} Number: {{player?.number}}<br />
+      <ion-button (click)="submit()">Submit</ion-button>
+    </ion-row>  
+    <ion-row *ngIf="bench">Tecnical Foul On: {{team?.name}} Bench<br />
+      <ion-button (click)="submit()">Submit</ion-button>
+    </ion-row>  
+  </ion-grid>
+</ion-content>

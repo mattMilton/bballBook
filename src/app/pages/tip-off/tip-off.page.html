@@ -1,0 +1,11 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Tip-Off</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <h3>Which Team Controled the Tip-Off</h3>
+  <ion-button (click)="controlledBy('away')">{{gameService.awayTeam.name}}</ion-button>
+  <ion-button (click)="controlledBy(home)">{{gameService.homeTeam.name}}</ion-button>
+</ion-content>

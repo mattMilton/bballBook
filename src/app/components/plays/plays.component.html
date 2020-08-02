@@ -1,0 +1,26 @@
+<div *ngIf="plays.plays.length">
+
+  <h2>Plays</h2>
+
+  <ion-grid>
+    <!-- These rows are for future version, planning on having tabs to select period from which 
+      to see play log... see more info in .ts file
+      <ion-row>
+      
+        <ion-button (click)="selectPeriod(0)">All</ion-button>
+      
+    </ion-row>
+    <ion-row>
+          <ion-col>
+            <ion-button *ngFor='let period of periodsArr' (click)="selectPeriod(period)"> {{period}} 
+            </ion-button>
+            </ion-col>
+
+    </ion-row> -->
+    <ion-row *ngFor='let play of plays.plays'> {{play.message}} 
+      <ion-button *ngIf="play.deletable == true" (click)="delete(play)">Remove</ion-button>
+      <ion-button *ngIf="play.type == 'Tip-Off'" (click)="toggle(play)">Toggle</ion-button>
+    </ion-row>
+  </ion-grid>
+
+</div>

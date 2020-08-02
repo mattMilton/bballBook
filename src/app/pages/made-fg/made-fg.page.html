@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{pts}} Point Field Goal Made</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-row>{{gameService.awayTeam.name}}</ion-row>
+        <ion-row *ngFor="let player of gameService.awayTeam.onCourt">
+          <ion-button (click)="madeBy(player, gameService.awayTeam)">{{player.number}}</ion-button>
+        </ion-row>
+      </ion-col>
+      <ion-col>
+        <ion-row>{{gameService.homeTeam.name}}</ion-row>
+        <ion-row *ngFor="let player of gameService.homeTeam.onCourt">
+          <ion-button (click)="madeBy(player, gameService.homeTeam)">{{player.number}}</ion-button>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf=(scorer)>Made By: {{team?.name}} Number: {{scorer?.number}}</ion-row>
+    <ion-row *ngIf=(scorer)>Assisted By</ion-row>
+    <ion-row *ngFor="let player of team?.onCourt">
+        <ion-button *ngIf="player != scorer" (click)="assistedBy(player)">{{player.number}}</ion-button>
+      </ion-row>
+      <ion-row *ngIf=(scorer)>
+        <ion-button (click)="assistedBy(null)">Unassisted</ion-button> 
+      </ion-row>
+      <ion-row *ngIf=(assisterSet)>
+        <ion-button (click)="submit()">Submit</ion-button>
+      </ion-row>
+
+  </ion-grid>
+</ion-content>

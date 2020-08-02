@@ -1,0 +1,19 @@
+<p>
+  <button (click)='incMinutes()'>+</button>
+  <button (click)='incSeconds()'>+</button>
+</p>
+<p>
+  <button (click)='startTimer()'>{{getMinutes() | number:'2.0-0'}}:{{getSeconds() | number:'2.0-0'}}</button>
+</p>
+<p>
+  <button (click)='decMinutes()'>-</button>
+  <button (click)='decSeconds()'>-</button>
+</p>
+<p>
+  <button (click)='startTimer()'>Start</button>
+  <button (click)='pauseTimer()'>Pause</button>
+</p>
+<p>Period: {{period}}
+  <button (click)='incPeriod()'>+</button>
+  <button (click)='decPeriod()'>-</button>
+</p>

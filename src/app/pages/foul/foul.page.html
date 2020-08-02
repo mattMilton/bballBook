@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Defensive Foul</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-row>{{gameService.awayTeam.name}}</ion-row>
+        <ion-row *ngFor="let player of gameService.awayTeam.onCourt">
+          <ion-button (click)="fouledBy(player, gameService.awayTeam)">{{player.number}}</ion-button>
+        </ion-row>
+      </ion-col>
+      <ion-col>
+        <ion-row>{{gameService.homeTeam.name}}</ion-row>
+        <ion-row *ngFor="let player of gameService.homeTeam.onCourt">
+          <ion-button (click)="fouledBy(player, gameService.homeTeam)">{{player.number}}</ion-button>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="fouler">Foul On: {{team?.name}} Number: {{fouler?.number}}
+    </ion-row>
+    <ion-row *ngIf="fouler"><h3>Shooting Foul?</h3><br />
+      <ion-button (click)="shootingFoul(true)">Yes</ion-button>
+      <ion-button (click)="shootingFoul(false)">No</ion-button> 
+    </ion-row>
+
+    <ion-row *ngIf="shooting == false">Non-Shooting Foul<br />
+      <ion-button (click)="submit()">Submit</ion-button>
+    </ion-row>
+    <ion-row *ngIf="shooting == true">Shooting Foul<br />
+      <ion-button (click)="submit()">Submit</ion-button>
+    </ion-row>
+
+    
+  </ion-grid>
+</ion-content>

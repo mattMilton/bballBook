@@ -1,0 +1,86 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{gameService.awayTeam.name}} vs {{gameService.homeTeam.name}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <app-scoreboard (periodStart)="periodStart($event)" (timeChange)="timeChange($event)" 
+                (timeOutEmitter)="timeOut($event)" (jumpBallEmitter)="jumpBall($event)"></app-scoreboard>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-button (click)="madeFG(2)">2 Pt FG Made</ion-button>
+      <ion-button (click)="missedFG(2)">2 Pt FG Missed</ion-button>
+      <ion-button (click)="madeFG(3)">3 Pt FG Made</ion-button>
+      <ion-button (click)="missedFG(3)">3 Pt FG Missed</ion-button>
+      <ion-button (click)="turnover()">Turnover</ion-button>
+      <ion-button (click)="foul()">Defensive Foul</ion-button>
+      <ion-button (click)="technical()">Technical Foul</ion-button>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-row>
+            <h2>{{gameService.awayTeam.name}} </h2>
+        </ion-row>
+        <ion-row>
+            <h3>On Court</h3>
+        </ion-row>
+        <ion-row *ngFor="let player of gameService.awayTeam.onCourt">
+            <ion-button (click)="sub('away', player, 'out')">{{player.number}}</ion-button>
+            <ion-label>{{player.name}}</ion-label><br>
+            <ion-label>P: {{player.points}} R: {{player.offRebounds + player.defRebounds}}
+             A: {{player.assists}} F: {{player.fouls}}</ion-label>
+          </ion-row>
+          <ion-row>
+              <h3>On Bench</h3>
+          </ion-row>
+          <ion-row *ngFor="let player of gameService.awayTeam.onBench">
+            <ion-button (click)="sub('away', player, 'in')">{{player.number}}</ion-button>
+              <ion-label>{{player.name}}</ion-label><br>
+              <ion-label>P: {{player.points}} R: {{player.offRebounds + player.defRebounds}}
+               A: {{player.assists}} F: {{player.fouls}}</ion-label>
+            </ion-row>
+            <ion-row>
+              <ion-button (click)="addPlayer('away')">+</ion-button>
+              <ion-label>Add Player</ion-label>
+            </ion-row>
+      </ion-col>
+      
+      <ion-col>
+          <ion-row>
+              <h2>{{gameService.homeTeam.name}} </h2>
+          </ion-row>
+          <ion-row>
+              <h3>On Court</h3>
+          </ion-row>
+          <ion-row *ngFor="let player of gameService.homeTeam.onCourt">
+              <ion-button (click)="sub('home', player, 'out')">{{player.number}}</ion-button>
+              <ion-label>{{player.name}}</ion-label><br>
+              <ion-label>P: {{player.points}} R: {{player.offRebounds + player.defRebounds}}
+               A: {{player.assists}} F: {{player.fouls}}</ion-label>
+            </ion-row>
+            <ion-row>
+                <h3>On Bench</h3>
+            </ion-row>
+            <ion-row *ngFor="let player of gameService.homeTeam.onBench">
+              <ion-button (click)="sub('home', player, 'in')">{{player.number}}</ion-button>
+                <ion-label>{{player.name}}</ion-label><br>
+                <ion-label>P: {{player.points}} R: {{player.offRebounds + player.defRebounds}}
+                 A: {{player.assists}} F: {{player.fouls}}</ion-label>
+              </ion-row>
+              <ion-row>
+                <ion-button (click)="addPlayer('home')">+</ion-button>
+                <ion-label>Add Player</ion-label>
+              </ion-row>
+        </ion-col>
+    </ion-row>
+    <ion-row>
+        <app-plays (deletePlayEmitter)="deletePlay($event)" 
+                  (togglePlayEmitter)="togglePlay($event)"></app-plays>
+    </ion-row>
+  </ion-grid>
+</ion-content>

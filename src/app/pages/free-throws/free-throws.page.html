@@ -1,0 +1,166 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Free Throws</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-grid>
+
+    <ion-row>
+      <h3>{{team.name}}</h3>
+    </ion-row> 
+    <ion-row *ngIf="reason == 'shooting'">Shooting Foul<br />
+      <h3>Did Shooter Make Field Goal?</h3><br />
+      <ion-button (click)="fieldGoalMade(true)">Yes</ion-button>
+      <ion-button (click)="fieldGoalMade(false)">No</ion-button>
+    </ion-row>
+    <ion-row *ngIf="fgMade == false">
+      <h3>What Type of Field Goal Was Missed</h3><br />
+      <ion-button (click)="fgType(2)">2 Pointer</ion-button>
+      <ion-button (click)="fgType(3)">3 Pointer</ion-button>
+    </ion-row>
+    <ion-row *ngIf="fgMade == true">Field Goal Made<br />
+      <h3>What Type of Field Goal Was Made</h3><br />
+      <ion-button (click)="fgType(2)">2 Pointer</ion-button>
+      <ion-button (click)="fgType(3)">3 Pointer</ion-button>
+    </ion-row>
+    <ion-row *ngIf="fgMadeType">{{fgMadeType}} Field Goal Attempt Made<br />
+      <h3>Shooter?</h3>
+      
+    </ion-row>
+    <ion-row *ngIf="fgMissedType">{{fgMissedType}} Field Goal Attempt Missed<br />
+      <h3>Shooter?</h3>
+    </ion-row>
+    <ion-row *ngIf="reason == 'team-fouls'">Team Fouls Limit Reached<br />
+      <h3>Shooter?</h3><br />
+      <ion-row *ngFor="let player of team.onCourt">
+        <ion-button (click)="ftShooter(player)">{{player.number}}</ion-button>
+      </ion-row>
+    </ion-row>
+    <ion-row *ngIf="typeSet">
+      <ion-row *ngFor="let player of team.onCourt">
+        <ion-button (click)="ftShooter(player)">{{player.number}}</ion-button>
+      </ion-row>
+    </ion-row>
+    <ion-row *ngIf="assistQuery">
+      <ion-col>
+        <h3>Assisted By?</h3>
+        <ion-row *ngFor="let player of team?.onCourt">
+          <ion-button *ngIf="player != shooter" (click)="assistedBy(player)">{{player.number}}</ion-button>
+        </ion-row>
+        <ion-row>
+          <ion-button (click)="assistedBy(null)">Unassisted</ion-button>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="freeThrowsReady">
+      <ion-col>
+        <ion-row>
+          At the line: {{team.name}} number {{shooter.number}} Shooting: {{typeString}}
+        </ion-row>
+        <ion-row *ngIf="assist">
+          Assisted by: number {{assist.number}}
+        </ion-row>
+        <ion-row *ngIf="typeString == 'One'">
+          <h3>Free Throw Made?</h3><br />
+          <ion-button (click)="ftMade(true, 1)">Yes</ion-button>
+          <ion-button (click)="ftMade(false, 1)">No</ion-button>
+          <h3 *ngIf="ftSuccess.length > 0">Free Throw {{ftSuccess[0]}}</h3>
+        </ion-row>
+        <ion-row *ngIf="typeString == 'One and One'">
+          <ion-col>
+            <ion-row>
+              <h3>Front End of Bonus Free Throw Made?</h3><br />
+              <ion-button (click)="ftMade(true, 1)">Yes</ion-button>
+              <ion-button (click)="ftMade(false, 1)">No</ion-button>
+              <h3 *ngIf="ftSuccess.length > 0">Free Throw {{ftSuccess[0]}}</h3>
+            </ion-row>
+            <ion-row *ngIf="madeFrontEnd">
+              <h3>Second Free Throw of Bonus Made?</h3><br />
+              <ion-button (click)="ftMade(true, 2)">Yes</ion-button>
+              <ion-button (click)="ftMade(false, 2)">No</ion-button>
+              <h3 *ngIf="ftSuccess.length > 1">Free Throw {{ftSuccess[1]}}</h3>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="typeString == 'Two'">
+          <ion-col>
+            <ion-row>
+              <h3>Free Throw One of Two Made?</h3><br />
+              <ion-button (click)="ftMade(true, 1)">Yes</ion-button>
+              <ion-button (click)="ftMade(false, 1)">No</ion-button>
+              <h3 *ngIf="ftSuccess.length > 0">Free Throw {{ftSuccess[0]}}</h3>
+            </ion-row>
+            <ion-row *ngIf="ftSuccess?.length > 0">
+              <h3>Free Throw Two of Two Made?</h3><br />
+              <ion-button (click)="ftMade(true, 2)">Yes</ion-button>
+              <ion-button (click)="ftMade(false, 2)">No</ion-button>
+              <h3 *ngIf="ftSuccess.length > 1">Free Throw {{ftSuccess[1]}}</h3>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="typeString == 'Three'">
+          <ion-col>
+            <ion-row>
+              <h3>Free Throw One of Three Made?</h3><br />
+              <ion-button (click)="ftMade(true, 1)">Yes</ion-button>
+              <ion-button (click)="ftMade(false, 1)">No</ion-button>
+              <h3 *ngIf="ftSuccess.length > 0">Free Throw {{ftSuccess[0]}}</h3>
+            </ion-row>
+            <ion-row *ngIf="ftSuccess?.length > 0">
+              <h3>Free Throw Two of Three Made?</h3><br />
+              <ion-button (click)="ftMade(true, 2)">Yes</ion-button>
+              <ion-button (click)="ftMade(false, 2)">No</ion-button>
+              <h3 *ngIf="ftSuccess.length > 1">Free Throw {{ftSuccess[1]}}</h3>
+            </ion-row>
+            <ion-row *ngIf="ftSuccess?.length > 1">
+              <h3>Free Throw Three of Three Made?</h3><br />
+              <ion-button (click)="ftMade(true, 3)">Yes</ion-button>
+              <ion-button (click)="ftMade(false, 3)">No</ion-button>
+              <h3 *ngIf="ftSuccess.length > 2">Free Throw {{ftSuccess[2]}}</h3>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    
+    <ion-row *ngIf="next == 'rebound'">
+      <ion-col>
+        <ion-row><h3>Rebounded By?</h3></ion-row>
+        <ion-row>{{gameService.awayTeam.name}}</ion-row>
+        <ion-row *ngFor="let player of gameService.awayTeam.onCourt">
+          <ion-button (click)="reboundedBy(player, gameService.awayTeam)">{{player.number}}</ion-button>
+        </ion-row>
+        <ion-row>
+          <ion-button (click)="reboundedBy(null, gameService.awayTeam)">{{gameService.awayTeam.name}}</ion-button>
+        </ion-row>
+      </ion-col>
+      <ion-col>
+        <ion-row>{{gameService.homeTeam.name}}</ion-row>
+        <ion-row *ngFor="let player of gameService.homeTeam.onCourt">
+          <ion-button (click)="reboundedBy(player, gameService.homeTeam)">{{player.number}}</ion-button>
+        </ion-row>
+        <ion-row>
+            <ion-button (click)="reboundedBy(null, gameService.homeTeam)">{{gameService.homeTeam.name}}</ion-button>
+          </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="rebounder">
+      Rebounded by: {{reboundingTeam.name}} number {{rebounder.number}}
+    </ion-row>
+    <ion-row *ngIf="next == 'submit'">
+      <ion-button (click)="submit()">Submit</ion-button>
+    </ion-row>
+    <ion-row *ngIf="rebounderSet">
+      <ion-button (click)="submit()">Submit</ion-button>
+    </ion-row>
+    
+
+    
+
+
+  </ion-grid>
+
+</ion-content>

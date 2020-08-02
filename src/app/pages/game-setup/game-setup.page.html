@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Game Setup</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+      <ion-item>
+        <ion-label>Period Minutes</ion-label>
+        <ion-input [(ngModel)]="periodMins"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Number of Periods</ion-label>
+        <ion-input [(ngModel)]="numPeriods"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Team Fouls to Bonus</ion-label>
+        <ion-input [(ngModel)]="foulsToBonus"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Team Fouls to Penalty</ion-label>
+        <ion-input [(ngModel)]="foulsToPenalty"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Personal Foul Limit</ion-label>
+        <ion-input [(ngModel)]="maxPersonalFouls"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Technical Foul Shots</ion-label>
+        <ion-input [(ngModel)]="technicalFoulShots"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Timeouts</ion-label>
+        <ion-input [(ngModel)]="timeouts"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label *ngIf="game.awayTeam">{{game.awayTeam.name}} :::: {{game.awayTeam.roster.length}} players</ion-label>
+        <ion-label *ngIf="!game.awayTeam">Away Team</ion-label>
+        <ion-button (click)=editTeam(1)>Edit Team</ion-button>
+      </ion-item>
+      <ion-item>
+          <ion-label *ngIf="game.homeTeam">{{game.homeTeam.name}} :::: {{game.homeTeam.roster.length}} players</ion-label>
+          <ion-label *ngIf="!game.homeTeam">Home Team</ion-label>
+          <ion-button (click)=editTeam(2)>Edit Team</ion-button>
+        </ion-item>
+        <ion-button (click)="fakePopulateTeams()">Fake Populate Teams</ion-button>
+      <ion-button (click)="startGame()">Start Game</ion-button>
+
+      <ion-item>
+
+        {{message}}
+      </ion-item>
+
+</ion-content>

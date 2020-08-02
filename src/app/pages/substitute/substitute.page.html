@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Substitution</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      {{team.name}} {{primaryPlayer.name}} {{primaryPlayer.number}}
+    </ion-row>
+    <ion-row>
+      <ion-col size="8">
+        Points<br>Rebounds<br>Assists<br>Steals<br>Blocks<br>Turnovers<br>Fouls<br>
+        Minutes<br>Technical Fouls<br>Field Goals Makes/Attempts<br>3Pt Field Goals Makes/Attempts<br>
+        Free Throws Makes/Attempts
+      </ion-col>
+      <ion-col>
+        {{primaryPlayer.points}}<br>{{primaryPlayer.offRebounds + primaryPlayer.defRebounds}}<br>
+        {{primaryPlayer.assists}}<br>{{primaryPlayer.steals}}<br>{{primaryPlayer.blocks}}<br>
+        {{primaryPlayer.turnovers}}<br>{{primaryPlayer.fouls}}<br>{{primaryPlayer.minutes}}<br>
+        {{primaryPlayer.technicalFouls}}<br>{{primaryPlayer.fgMakes}}/{{primaryPlayer.fgAttempts}}<br>
+        {{primaryPlayer.thrPtMakes}}/{{primaryPlayer.thrPtAttempts}}<br>
+        {{primaryPlayer.ftMakes}}/{{primaryPlayer.ftAttempts}}
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  
+  <ion-grid *ngIf='dir == "out"'>
+    <ion-row>Substitute Out for:</ion-row>
+    <ion-row *ngFor="let player of team?.onBench">
+      <ion-button (click)="sub(player)">{{player.number}}</ion-button>
+    </ion-row>
+    <ion-row>
+      <ion-button (click)="noSub()">Do not Sub Out</ion-button>
+    </ion-row>
+  </ion-grid>
+  <ion-grid *ngIf='dir == "in"'>
+    <ion-row>Substitue In for:</ion-row>
+      <ion-row *ngFor="let player of team?.onCourt">
+        <ion-button (click)="sub(player)">{{player.number}}</ion-button>
+      </ion-row>
+      <ion-row>
+        <ion-button (click)="noSub()">Do not Sub In</ion-button>
+      </ion-row>
+    </ion-grid>
+</ion-content>
+

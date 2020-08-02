@@ -1,0 +1,1 @@
+export enum FreeThrowsType { ONE, TWO, THREE, ONE_AND_ONE }

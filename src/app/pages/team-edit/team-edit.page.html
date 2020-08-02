@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{locString}} Team</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label>Team Name</ion-label>
+    <ion-input [(ngModel)]="team.name"></ion-input> 
+  </ion-item>
+  <ion-grid>
+    <ion-row *ngFor="let player of team.roster">
+      <ion-label>{{player.number}} {{player.name}}</ion-label>
+      <ion-button (click)="removePlayer(player)">Remove</ion-button>
+    </ion-row>
+    <ion-row>
+      New Player
+    </ion-row>
+    <ion-row>
+        
+            <ion-label stacked>Number</ion-label>
+            <ion-input type="numberic" id="input" [(ngModel)]="newPlayerNumber"></ion-input>
+        
+    </ion-row>
+    <ion-row>
+        
+        <ion-label stacked>Name</ion-label>
+        <ion-input type="text" id="input" [(ngModel)]="newPlayerName"></ion-input>
+    
+</ion-row>
+    <ion-row>
+      <ion-button (click)="addPlayer()">Add Player</ion-button>
+    </ion-row>
+    <ion-row>
+        <ion-button (click)="saveTeam()">Save</ion-button>
+      </ion-row>
+      <ion-row>
+        {{message}}
+      </ion-row>
+  </ion-grid>
+
+</ion-content>
