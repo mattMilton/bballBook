@@ -11,7 +11,13 @@ export class PlaysLogService {
 
   constructor() {
     console.log("in plays-logService constructor");
-    this.plays = JSON.parse(localStorage.getItem('playsData'));
+
+    // following is going to be done in gameService after gameService attributes and objects built
+
+    // this.plays = JSON.parse(localStorage.getItem('playsData'));
+    // console.log(this.plays)
+    // console.log (this.plays[0] );
+    // this.plays.forEach(play => )
    }
 
   savePlays() {

@@ -46,6 +46,7 @@ export class PlaysComponent implements OnInit {
     }
   
     this.deletePlayEmitter.emit({event: event, play: play, index: index});
+    
   }
 
   toggle(play: Play) {
@@ -57,5 +58,6 @@ export class PlaysComponent implements OnInit {
     // eventually used for something other than jump balls.
     const index: number = this.plays.plays.indexOf(play);
     this.togglePlayEmitter.emit({event: event, play: play, index: index});
+    
   }
 }

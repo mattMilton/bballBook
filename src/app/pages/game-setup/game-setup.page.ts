@@ -154,9 +154,7 @@ export class GameSetupPage implements OnInit {
       this.onCourtHistory.deleteHistory();
       this.onCourtHistory.add(onCourt);
 
-      this.game.saveGameData();
-      this.onCourtHistory.saveOnCourtData();
-            
+      this.game.saveGameData();          
       this.router.navigate(['/game'])
     }
   }

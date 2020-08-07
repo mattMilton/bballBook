@@ -19,10 +19,10 @@ export class OnCourtHistoryService {
               public plays: PlaysLogService) { 
 
      console.log("in on-court-historyService constructor");
-     const onCourtData = JSON.parse(localStorage.getItem('onCourtData'));
-     this.history = onCourtData.history;
-     this.currentlyOnCourtIndex = onCourtData.currentlyOnCourtIndex;
-     this.latestOnCourt = onCourtData.latestOnCourt;
+    //  const onCourtData = JSON.parse(localStorage.getItem('onCourtData'));
+    //  this.history = onCourtData.history;
+    //  this.currentlyOnCourtIndex = onCourtData.currentlyOnCourtIndex;
+    //  this.latestOnCourt = onCourtData.latestOnCourt;
 
               }
 
@@ -64,6 +64,8 @@ export class OnCourtHistoryService {
         this.latestOnCourt = true;
       }
     }
+
+    this.saveOnCourtData();
 
     // below 8 lines only debugging
     console.log(this.history);
@@ -219,6 +221,8 @@ export class OnCourtHistoryService {
 
     
     this.checkSubsequentValidity(index);
+
+    this.saveOnCourtData();
 
     // below logic is only needed to set game on court if/when it isn't told to do so otherwise
     // this would only be the case if latest on course is true

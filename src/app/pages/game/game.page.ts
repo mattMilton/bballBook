@@ -110,6 +110,7 @@ export class GamePage implements OnInit {
       play.playType = PlayType.TIMEOUT;
       
       this.plays.timeOut(play);
+      this.gameService.saveGameData();
 
       this.scoreboardReference.stopClock();
     }
@@ -129,6 +130,7 @@ export class GamePage implements OnInit {
     play.otherTeam = this.gameService.possArrow;
     
     this.plays.jumpBall(play);
+    this.gameService.saveGameData();
 
     this.scoreboardReference.stopClock();
   }
@@ -233,6 +235,7 @@ export class GamePage implements OnInit {
         // below is to force deleted sub to update players on court
         let timeLeft = this.timerReference.getMinutes() * 60 + this.timerReference.getSeconds(); 
         this.onCourtHistory.timeChange(this.timerReference.period, timeLeft);
+        this.onCourtHistory.saveOnCourtData();
         break;
       case PlayType.TIMEOUT:
         play.team.timeouts++;
@@ -242,7 +245,10 @@ export class GamePage implements OnInit {
       default:
           console.log("No such day exists!");
           break;
-  }
+
+    }
+    this.plays.savePlays();
+    this.gameService.saveGameData();
 
   }
 
@@ -266,6 +272,8 @@ export class GamePage implements OnInit {
       this.gameService.changePossArrow();
     };
 
+    this.plays.savePlays();
+    this.gameService.saveGameData();
 
 
   }

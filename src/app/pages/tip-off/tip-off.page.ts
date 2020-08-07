@@ -46,6 +46,7 @@ export class TipOffPage implements OnInit {
     // some sort of play log to add to plays
     this.plays.tipControl(this.play);
 
+    this.gameService.saveGameData();
     this.router.navigate(['/game']);
   }
 }

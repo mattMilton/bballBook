@@ -75,6 +75,7 @@ export class MadeFgPage implements OnInit {
     console.log(this.play);
 
     // return to the game page
+    this.gameService.saveGameData();
     this.router.navigate(['/game']);
   }
 }

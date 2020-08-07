@@ -31,18 +31,27 @@ export class GameService {
     console.log("in gameService constructor");
     
     var gameData = JSON.parse(localStorage.getItem('gameData'));
+
+    // primitive types should assign properly
     this.periods = gameData.periods;
     this.periodMinutes = gameData.periodMinutes;
     this.bonus = gameData.bonus;
     this.penalty = gameData.penalty;
-    this.teamFouls = gameData.teamFouls;
     this.maxPersonalFouls = gameData.maxPersonalFouls;
     this.technicals = gameData.technicals;
-    this.awayTeam =  gameData.awayTeam as Team;
+    // enum type should still work
+    this.teamFouls = gameData.teamFouls;
+    // objects that need to be rebuilt--teams, and players and arrays of players inside teams
+    // read in each player (onCourt first) create new Player add to onCourt and roster, then onBench
+    // add to onBench and roster. 
+    // first create new Team
+    this.awayTeam =  new Team(gameData.awayTeam.name);
     this.homeTeam = gameData.homeTeam as Team;
+    // possArrow need just refer to one of the created teams
     this.possArrow = gameData.possArrow as Team;
 
-    console.log(typeof gameData + " " + typeof this.awayTeam);
+    console.log(this.awayTeam.name);
+    console.log(gameData.awayTeam.roster[0]);
   }
   
   saveGameData() {
@@ -73,6 +82,7 @@ export class GameService {
     }
     console.log(this.awayTeam);
     console.log(this.homeTeam);
+    this.saveGameData();
   }
 
   setPeriods(periods: number, periodMinutes: number) {

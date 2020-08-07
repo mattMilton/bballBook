@@ -80,6 +80,7 @@ export class FoulPage implements OnInit {
           // no free throws not yet to limit
           console.log ("not yet to limit, no free throws");
           // no resulting free-throws return to game page
+          this.gameService.saveGameData();
           this.router.navigate(['/game']);
         }
       } else {
@@ -92,6 +93,7 @@ export class FoulPage implements OnInit {
           // no free throws not yet to limit
           console.log ("not yet to limit, no free throws");
           // no resulting free-throws return to game page
+          this.gameService.saveGameData();
           this.router.navigate(['/game']);
         }
       }

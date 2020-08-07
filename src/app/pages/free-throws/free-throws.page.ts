@@ -338,6 +338,7 @@ export class FreeThrowsPage implements OnInit {
     });
 
     // navigate back to game page
+    this.gameService.saveGameData();
     this.router.navigate(['/game']);
   }
 }

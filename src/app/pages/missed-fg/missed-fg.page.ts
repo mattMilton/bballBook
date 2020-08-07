@@ -108,6 +108,7 @@ export class MissedFgPage implements OnInit {
 
 
     // return to the game page
+    this.gameService.saveGameData();
     this.router.navigate(['/game']);
   }
 }

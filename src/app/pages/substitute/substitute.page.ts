@@ -147,6 +147,7 @@ export class SubstitutePage implements OnInit {
     this.onCourtHistory.add(onCourt);
 
     // navigate back to game page
+    this.gameService.saveGameData();
     this.router.navigate(['game']);
   }
 

@@ -46,6 +46,7 @@ export class AddPlayerPage implements OnInit {
       this.team.onBench.push(this.player);
       this.team.onBench.sort((a,b) => a.number-b.number);
   
+      this.game.saveGameData();
       this.router.navigate(['/game']);
     } else {
       // either number in use or no number given, alert user somehow
