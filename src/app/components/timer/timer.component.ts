@@ -14,6 +14,7 @@ export class TimerComponent implements OnInit {
 
   @Output() periodStart = new EventEmitter();
   @Output() timeChange = new EventEmitter();
+  @Output() anyTimeChange = new EventEmitter();
 
   period: number = 1;
   periodMinutes: number;
@@ -23,13 +24,27 @@ export class TimerComponent implements OnInit {
 
   constructor(public gameService: GameService,
       public plays: PlaysLogService,
-      public onCourtHistory: OnCourtHistoryService) { }
+      public onCourtHistory: OnCourtHistoryService) {
 
+        console.log("in timer constructor");
+      }
+      
   ngOnInit() {
     // console.log(this.gameService.periodMinutes);
     this.periodMinutes = this.gameService.periodMinutes;
-    this.timeLeft = this.periodMinutes * 60;
-    // console.log(this.periodMinutes);
+    
+    // set clock if time in localStorage
+    var timeData = JSON.parse(localStorage.getItem('time'));
+  
+    if (timeData) {
+      console.log("got timeData");
+      this.period = timeData.period;
+      this.timeLeft = timeData.timeLeft;
+    } else {
+      this.timeLeft = this.periodMinutes * 60;
+
+    }
+    
     this.clockRunning = false;     // to be dealt with, when first hitting start,
     // clock sets period and time, then needs to be hit again to run clock,
     // when adding this, bool in conditional operations, another press was needed.
@@ -48,13 +63,26 @@ export class TimerComponent implements OnInit {
           if (this.period < this.gameService.periods) {
             if (this.period > 0){
               this.plays.periodEnd(this.period);
-            }
+            } 
             this.period++;
             this.timeLeft = this.periodMinutes * 60;
             clearInterval(this.interval);
             this.clockRunning = false;
+          } else {
+            // end of regulation/OT scenario
+            if (this.period >= this.gameService.periods) {
+              
+              if (this.gameService.endOfRegulation()) { // true condition means OT
+                this.plays.periodEnd(this.period);
+                this.period++; // period will now be greater than periods
+                this.timeLeft = this.gameService.overtimeMinutes * 60;
+                clearInterval(this.interval);
+                this.clockRunning = false;
+              }
+            }
           }
         }
+        localStorage.setItem('time', JSON.stringify({period: this.period, timeLeft: this.timeLeft}));
       }, 1000);
       
       // if start of a period, emit the event, with period number to parent,
@@ -62,6 +90,9 @@ export class TimerComponent implements OnInit {
       // determines possession
       if (this.timeLeft == this.periodMinutes * 60) {
         this.periodStart.emit({ event: event, period: this.period});
+      }
+      if (this.period > this.gameService.periods && this.timeLeft == this.gameService.overtimeMinutes * 60) {
+        this.periodStart.emit({ event: event, period: this.period });
       }
       // set clock to running
       this.clockRunning = true;
@@ -81,13 +112,15 @@ export class TimerComponent implements OnInit {
       this.timeLeft = this.periodMinutes * 60;
     }
     this.timeChange.emit({ event: event, period: this.period, timeLeft: this.timeLeft });
+    localStorage.setItem('time', JSON.stringify({period: this.period, timeLeft: this.timeLeft}));
   }
 
   decMinutes() {
     this.timeLeft -= 60;
     if (!this.onCourtHistory.latestOnCourt) {
       this.timeChange.emit({ event: event, period: this.period, timeLeft: this.timeLeft});
-    }
+    } 
+    localStorage.setItem('time', JSON.stringify({period: this.period, timeLeft: this.timeLeft}));
   }
 
   incSeconds() {
@@ -95,22 +128,33 @@ export class TimerComponent implements OnInit {
       this.timeLeft++;
     }
     this.timeChange.emit({ event: event, period: this.period, timeLeft: this.timeLeft });
+    localStorage.setItem('time', JSON.stringify({period: this.period, timeLeft: this.timeLeft}));
   }
   
   decSeconds() {
     this.timeLeft--;
       if (!this.onCourtHistory.latestOnCourt) {
         this.timeChange.emit({ event: event, period: this.period, timeLeft: this.timeLeft});
-      }
+      } 
+      localStorage.setItem('time', JSON.stringify({period: this.period, timeLeft: this.timeLeft}));
   }
   
   incPeriod() {
     if (this.period < this.gameService.periods) {
       this.period++;
+      // when incrementing period, we must check to see if period end and start have been logged.
+      // otherwise log will not show period messages and possession arrow will not be correct.
+      if (!this.plays.alreadyLoggedPeriodMessage("End", this.period - 1)) {
+        this.plays.periodEnd(this.period - 1);
+      }
+      if (!this.plays.alreadyLoggedPeriodMessage("Start", this.period)) {
+        this.periodStart.emit({ event: event, period: this.period});
+      }
     }
     if (!this.onCourtHistory.latestOnCourt) {
       this.timeChange.emit({ event: event, period: this.period, timeLeft: this.timeLeft});
-    }
+    } 
+    localStorage.setItem('time', JSON.stringify({period: this.period, timeLeft: this.timeLeft}));
   }
   
   decPeriod() {
@@ -118,6 +162,7 @@ export class TimerComponent implements OnInit {
       this.period--;
     }
     this.timeChange.emit({ event: event, period: this.period, timeLeft: this.timeLeft});
+    localStorage.setItem('time', JSON.stringify({period: this.period, timeLeft: this.timeLeft}));
   }
 
   getMinutes(): number {
@@ -127,4 +172,9 @@ export class TimerComponent implements OnInit {
   getSeconds(): number {
     return this.timeLeft % 60;
   }
+
+  // setClock(period: number, timeLeft: number) {
+  //   this.period = period;
+  //   this.timeLeft = timeLeft;
+  // }
 }

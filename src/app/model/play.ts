@@ -27,6 +27,21 @@ export class Play {
 
     constructor() {}
 
+    setPrimData(data: any) {
+        this.period = data.period;
+        this.minutes = data.minutes;
+        this.seconds = data.seconds;
+        this.priority = data.priority;
+        this.type = data.type;
+        this.playType = data.playType;
+        this.secondaryType = data.secondaryType;
+        this.tertiaryType = data.tertiaryType;
+        this.extra = data.extra;
+        this.extra = data.extraTF;
+        this.deletable = data.deletable;
+        this.message = data.message;
+    }
+
     periodMessage(status: string) {
         this.message = status + " of Period " + this.period;
         if (status == "Start" && this.team) {

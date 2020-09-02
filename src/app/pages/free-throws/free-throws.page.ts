@@ -260,10 +260,12 @@ export class FreeThrowsPage implements OnInit {
       if (this.fgMadeType == 3) {
         this.shooter.thrPtAttempts++;
         this.shooter.thrPtMakes++;
+        this.team.points += 3;
         console.log(this.shooter.thrPtMakes);
         this.play.type = "3 point Field Goal Made";
         this.play.playType = PlayType.MADE_3;
       } else {
+        this.team.points += 2;
         this.play.type = "2 point Field Goal Made";
         this.play.playType = PlayType.MADE_2;
       }
@@ -297,6 +299,7 @@ export class FreeThrowsPage implements OnInit {
       if (ft == "Made"){
         this.shooter.ftMakes++;
         this.shooter.points++;
+        this.team.points++;
         this.play.playType = PlayType.MADE_FT;
       } else {
         this.play.playType = PlayType.MISSED_FT;

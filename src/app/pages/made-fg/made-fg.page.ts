@@ -50,6 +50,7 @@ export class MadeFgPage implements OnInit {
     console.log(this.scorer.name + " " + this.scorer.points + " points");
     this.scorer.fgAttempts++;
     this.scorer.fgMakes++;
+    this.team.points += this.pts;
     this.play.primary = this.scorer;
 
     if (this.pts == 3) {

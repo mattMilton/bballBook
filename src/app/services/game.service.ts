@@ -7,6 +7,7 @@ import { PlaysLogService } from './plays-log.service';
 import { OnCourtHistoryService } from './on-court-history.service';
 import { OnCourt } from '../model/onCourt';
 import { Game } from '../model/game';
+import { Play } from '../model/play';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,8 @@ export class GameService {
   awayTeam: Team;
   homeTeam: Team;
   possArrow: Team;
+  overtimePeriods: number = 0;
+  overtimeMinutes: number = 5;
   
   
   
@@ -32,26 +35,94 @@ export class GameService {
     
     var gameData = JSON.parse(localStorage.getItem('gameData'));
 
-    // primitive types should assign properly
-    this.periods = gameData.periods;
-    this.periodMinutes = gameData.periodMinutes;
-    this.bonus = gameData.bonus;
-    this.penalty = gameData.penalty;
-    this.maxPersonalFouls = gameData.maxPersonalFouls;
-    this.technicals = gameData.technicals;
-    // enum type should still work
-    this.teamFouls = gameData.teamFouls;
-    // objects that need to be rebuilt--teams, and players and arrays of players inside teams
-    // read in each player (onCourt first) create new Player add to onCourt and roster, then onBench
-    // add to onBench and roster. 
-    // first create new Team
-    this.awayTeam =  new Team(gameData.awayTeam.name);
-    this.homeTeam = gameData.homeTeam as Team;
-    // possArrow need just refer to one of the created teams
-    this.possArrow = gameData.possArrow as Team;
+    if (gameData) {
 
-    console.log(this.awayTeam.name);
-    console.log(gameData.awayTeam.roster[0]);
+      // primitive types should assign properly
+      this.periods = gameData.periods;
+      this.periodMinutes = gameData.periodMinutes;
+      this.bonus = gameData.bonus;
+      this.penalty = gameData.penalty;
+      this.maxPersonalFouls = gameData.maxPersonalFouls;
+      this.technicals = gameData.technicals;
+      this.overtimePeriods = gameData.overtimePeriods;
+      this.overtimeMinutes = gameData.overtimeMinutes;
+      // enum type should still work
+      this.teamFouls = gameData.teamFouls;
+      // objects that need to be rebuilt--teams, and players and arrays of players inside teams
+      // read in each player (onCourt first) create new Player add to onCourt and roster, then onBench
+      // add to onBench and roster. 
+      // first create new Team
+      this.awayTeam =  new Team(gameData.awayTeam.name);
+      this.awayTeam.buildFromPlainObject(gameData.awayTeam);
+  
+      this.homeTeam = new Team(gameData.homeTeam.name);
+      this.homeTeam.buildFromPlainObject(gameData.homeTeam);
+
+      // set possession arrow 
+      if (gameData.possArrow.name == this.awayTeam.name) {
+        this.possArrow = this.awayTeam;
+        console.log("assigned possArrow to awayTeam");
+      } 
+      if (gameData.possArrow.name == this.homeTeam.name) {
+        this.possArrow = this.homeTeam;
+        console.log("assigned possArrow to homeTeam");
+      }
+  
+      // i believe all team and player objects have been properly rebuilt 
+      // need to rebuild entire play log next
+
+      // also while iterating plays, plays needs to check for period and tip messages
+      for (let i = 0; i < this.plays.playsData.length; i++) {
+        let playData = this.plays.playsData[i];
+        console.log("play message: " + playData.message);
+        // make new play
+        let play: Play = new Play();
+  
+        // set all primitive types from playData in newly created object
+        play.setPrimData(playData);
+  
+        // Determine and set references to all objects in play
+        // first teams
+        if (playData.team) {
+          if (playData.team.name == this.awayTeam.name) {
+            play.team = this.awayTeam;
+            play.otherTeam = this.homeTeam;
+          } else {
+            play.team = this.homeTeam;
+            play.otherTeam = this.awayTeam;
+          }
+        }
+  
+        // then players
+        if (play.team) {
+          for (let p = 0; p < play.team.roster.length; p++){
+            if (playData.primary && playData.primary.number == play.team.roster[p].number) {
+              play.primary = play.team.roster[p];
+            } else {
+              if (playData.secondary && playData.secondary.number == play.team.roster[p].number) {
+                play.secondary = play.team.roster[p];
+              } else {
+                if (playData.tertiary && playData.tertiary.number == play.team.roster[p].number) {
+                  play.tertiary = play.team.roster[p];
+                }
+              }
+            }
+          }
+        }
+  
+        // push to plays.plays
+        this.plays.plays.push(play);
+      }
+      
+    }
+
+    
+
+    // then entire onCourtHistory's history needs rebuilding. not sure where to do this. would
+    // be preferred to do here, but need to make sure referring to onCourtHistory service from 
+    // this service doesn't brake things.
+    // I think it would brake, since ochs refers to this. cant have them refer to each other.
+    // instead, do all in onCHS, which should not construct until after this does. 
   }
   
   saveGameData() {
@@ -66,7 +137,9 @@ export class GameService {
       technicals: this.technicals,
       awayTeam: this.awayTeam,
       homeTeam: this.homeTeam,
-      possArrow: this.possArrow
+      possArrow: this.possArrow,
+      overtimePeriods: this.overtimePeriods,
+      overtimeMinutes: this.overtimeMinutes
       
     }
     localStorage.setItem('gameData', JSON.stringify(gameData));
@@ -116,4 +189,11 @@ export class GameService {
     }
   }
 
+  endOfRegulation(): boolean{
+    console.log("end of regulation");
+    if (this.awayTeam.points == this.homeTeam.points) {
+      this.overtimePeriods++;
+      return true;
+    } else { return false;}
+  }
 }

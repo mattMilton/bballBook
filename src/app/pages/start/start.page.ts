@@ -16,6 +16,7 @@ export class StartPage implements OnInit {
   }
 
   letsGo() {
+    localStorage.clear();
     this.router.navigate(['/game-setup'])
   }
 }

@@ -27,6 +27,36 @@ export class Player {
         this.number = number;
     }
 
+    buildFromPlainObject(object: any) {
+        this.name = object.name;
+        this.number = object.number;
+        this.points = object.points;
+        this.assists = object.assists;
+        this.fgAttempts = object.fgAttempts;
+        this.fgMakes = object.fgMakes;
+        this.thrPtAttempts = object.thrPtAttempts;
+        this.thrPtMakes = object.thrPtMakes;
+        this.blocks = object.blocks;
+        this.defRebounds = object.defRebounds;
+        this.offRebounds = object.offRebounds;
+        this.steals = object.steals;
+        this.turnovers = object.turnovers;
+        this.fouls = object.fouls;
+        this.technicalFouls = object.technicalFouls;
+        this.minutes = object.minutes;
+
+        for(let i = 0; i < object.subLog.length; i++) {
+        
+            var sub = new Substitution();
+            sub.subType = object.subLog[i].subType;
+            sub.period = object.subLog[i].period;
+            sub.minutes = object.subLog[i].minutes;
+            sub.seconds = object.subLog[i].seconds;
+            
+            this.subLog.push(sub);
+        }
+    }
+
     updateMinutes(period: number, minutes: number, seconds: number, 
                     periodLength: number) {
 

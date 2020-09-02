@@ -22,6 +22,7 @@ export class GameSetupPage implements OnInit {
   maxPersonalFouls: number = 5;
   technicalFoulShots: number = 1;
   timeouts: number = 5;
+  overtimeMinutes: number = 5;
   awayTeam: Team = new Team("Away");
   homeTeam: Team = new Team("Home");
   message: String = "";
@@ -96,6 +97,10 @@ export class GameSetupPage implements OnInit {
       this.message += "If you are using both bonus and penalty, bunus must be less than penalty.  ";
       valid = false;
     }
+    if (isNaN(this.overtimeMinutes) || this.overtimeMinutes <= 0) {
+      this.message += "Overtime Minutes must be a positive number. ";
+      valid = false;
+    }
     if (!this.game.awayTeam.name) { 
       this.message += "Away Team must be named.  ";
       valid = false;
@@ -123,6 +128,7 @@ export class GameSetupPage implements OnInit {
       }
       this.game.maxPersonalFouls = this.maxPersonalFouls;
       this.game.technicals = this.technicalFoulShots;
+      this.game.overtimeMinutes = this.overtimeMinutes;
 
       this.game.awayTeam.timeouts = this.timeouts;
       this.game.homeTeam.timeouts = this.timeouts;  
@@ -140,19 +146,7 @@ export class GameSetupPage implements OnInit {
   
       });
 
-      // starters to an onCourtHistory record
-      var onCourt: OnCourt = new OnCourt();
-      onCourt.period = 1;
-      onCourt.timeLeft = this.game.periodMinutes * 60;
-      this.game.awayTeam.onCourt.forEach(player => {
-        onCourt.awayOnCourt.push(player);
-      });
-      this.game.homeTeam.onCourt.forEach(player => {
-        onCourt.homeOnCourt.push(player);
-      })
-      // since new game, reset/remove onCourt history from local storage
-      this.onCourtHistory.deleteHistory();
-      this.onCourtHistory.add(onCourt);
+      
 
       this.game.saveGameData();          
       this.router.navigate(['/game'])

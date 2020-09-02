@@ -63,22 +63,50 @@ export class GamePage implements OnInit {
   }
 
   periodStart($event) {
-    var play = new Play();
-    play.period = $event.period;
-    play.minutes = this.gameService.periodMinutes;
-    play.seconds = 0;
-    // if period one, or OT go to tip-off
-    if ($event.period == 1 || $event.period > this.gameService.periods){
-      play.priority = 0;  // needs priority over jump ball message.
-      this.plays.periodStart(play);
-      this.router.navigate(['/tip-off']);
-    } else {
-      play.playType = PlayType.PERIOD;
-      play.team = this.gameService.possArrow;
-      this.plays.periodStart(play);
-      this.gameService.changePossArrow();
-      play.otherTeam = this.gameService.possArrow; 
-      console.log("start of period number " + $event.period);
+    if (!this.plays.alreadyLoggedPeriodMessage("Start", $event.period)){
+
+      var play = new Play();
+      play.period = $event.period;
+      if (play.period > this.gameService.periods) {
+        play.minutes = this.gameService.overtimeMinutes;
+      } else {
+        play.minutes = this.gameService.periodMinutes;
+      }
+      play.seconds = 0;
+      // if period one, or OT go to tip-off
+      if ($event.period == 1 || $event.period > this.gameService.periods){
+        play.priority = 0;  // needs priority over jump ball message.
+        this.plays.periodStart(play);
+        // create onCourt for starters and push to onCourtHistory
+        // only if first period
+        if ($event.period == 1) {
+          // starters to an onCourtHistory record
+          var onCourt: OnCourt = new OnCourt();
+          onCourt.period = 1;
+          onCourt.timeLeft = this.gameService.periodMinutes * 60;
+          this.gameService.awayTeam.onCourt.forEach(player => {
+            onCourt.awayOnCourt.push(player);
+          });
+          this.gameService.homeTeam.onCourt.forEach(player => {
+            onCourt.homeOnCourt.push(player);
+          })
+          
+          this.onCourtHistory.add(onCourt);
+          // save starters. only bit of onCourt history needing to persist, 
+          // rest will be derived from plays
+          localStorage.setItem('awayStarters', JSON.stringify(onCourt.awayOnCourt));
+          localStorage.setItem('homeStarters', JSON.stringify(onCourt.homeOnCourt));
+        }
+
+        this.router.navigate(['/tip-off/' + $event.period]);
+      } else {
+        play.playType = PlayType.PERIOD;
+        play.team = this.gameService.possArrow;
+        this.plays.periodStart(play);
+        this.gameService.changePossArrow();
+        play.otherTeam = this.gameService.possArrow; 
+        console.log("start of period number " + $event.period);
+      }
     }
   }
 
@@ -157,6 +185,7 @@ export class GamePage implements OnInit {
         play.primary.points -= 2;
         play.primary.fgMakes--;
         play.primary.fgAttempts--;
+        play.team.points -= 2;
         if (play.secondary){
           play.secondary.assists--; 
         }
@@ -167,6 +196,7 @@ export class GamePage implements OnInit {
         play.primary.fgAttempts--;
         play.primary.thrPtMakes--;
         play.primary.thrPtAttempts--;
+        play.team.points -= 3;
         if (play.secondary){
           play.secondary.assists--; 
         }
@@ -215,6 +245,7 @@ export class GamePage implements OnInit {
         play.primary.ftAttempts--;
         play.primary.ftMakes--;
         play.primary.points--;
+        play.team.points--;
         break;
       case PlayType.MISSED_FT:
         play.primary.ftAttempts--;
@@ -235,7 +266,6 @@ export class GamePage implements OnInit {
         // below is to force deleted sub to update players on court
         let timeLeft = this.timerReference.getMinutes() * 60 + this.timerReference.getSeconds(); 
         this.onCourtHistory.timeChange(this.timerReference.period, timeLeft);
-        this.onCourtHistory.saveOnCourtData();
         break;
       case PlayType.TIMEOUT:
         play.team.timeouts++;
@@ -354,6 +384,7 @@ export class GamePage implements OnInit {
 
   updateMinutesAll() {
     this.gameService.awayTeam.onCourt.forEach(player => {
+        console.log("player update minutes: " + player.name);
         player.updateMinutes(this.timerReference.period, this.timerReference.getMinutes(), 
           this.timerReference.getSeconds(), this.gameService.periodMinutes);
     });

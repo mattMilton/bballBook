@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Play, PlayType } from '../model/play';
 import { Team } from '../model/team';
+import { Variable } from '@angular/compiler/src/render3/r3_ast';
 
 @Injectable({
   providedIn: 'root'
@@ -8,45 +9,77 @@ import { Team } from '../model/team';
 export class PlaysLogService {
 
   plays: Play[] = [];
+  playsData: any[] = [];
+  startsLogged: number = 0;
+  endsLogged: number = 0;
+  tipOffsLogged: number = 0;;
 
   constructor() {
     console.log("in plays-logService constructor");
 
-    // following is going to be done in gameService after gameService attributes and objects built
+    this.playsData = JSON.parse(localStorage.getItem('playsData'));
+    
+    var periodLogData = JSON.parse(localStorage.getItem('periodLogData'));
 
-    // this.plays = JSON.parse(localStorage.getItem('playsData'));
-    // console.log(this.plays)
-    // console.log (this.plays[0] );
-    // this.plays.forEach(play => )
+    if (periodLogData) {
+      this.startsLogged = periodLogData.startsLogged;
+      this.endsLogged = periodLogData.endsLogged;
+      this.tipOffsLogged = periodLogData.tipOffsLogged;
+    }
    }
 
   savePlays() {
     localStorage.setItem('playsData', JSON.stringify(this.plays));
+    localStorage.setItem('periodLogData', JSON.stringify({startsLogged: this.startsLogged,
+                                  endsLogged: this.endsLogged, tipOffsLogged: this.tipOffsLogged}));
   }
 
   periodEnd(period: number) {
-    var play = new Play();
-    play.period = period;
-    play.minutes = 0;
-    play.seconds = 0;
-    play.priority = 0;
-    play.periodMessage("End");
-    if (this.mostRecent(play)) {
-      this.plays.unshift(play);
-    } else {
-      this.insertPlay(play);
+    if (!this.alreadyLoggedPeriodMessage("End", period)) {
+      var play = new Play();
+      play.period = period;
+      play.minutes = 0;
+      play.seconds = 0;
+      play.priority = 0;
+      play.periodMessage("End");
+      if (this.mostRecent(play)) {
+        this.plays.unshift(play);
+      } else {
+        this.insertPlay(play);
+      }
+      this.endsLogged++;
+      this.savePlays();
     }
-    this.savePlays();
   }
 
   periodStart(play: Play) {
-    play.periodMessage("Start");
-    if (this.mostRecent(play)){
-      this.plays.unshift(play);
-    } else {
-      this.insertPlay(play);
+    if (!this.alreadyLoggedPeriodMessage("Start", play.period)) {
+      play.periodMessage("Start");
+      if (this.mostRecent(play)){
+        this.plays.unshift(play);
+      } else {
+        this.insertPlay(play);
+      } 
+      this.startsLogged++;
+      this.savePlays();
     }
-    this.savePlays();
+  }
+
+  alreadyLoggedPeriodMessage(status: string, period: number): boolean {
+    
+    if (status == "Start") {
+      if (period <= this.startsLogged) return true;
+    }
+    if (status == "End") {
+      if (period <= this.endsLogged) return true;
+    }
+    // pretty sure below is not needed..... shouldn't reach if already logged
+    // if (status == "Tip-Off") {
+    //   // first logged is period one. subsequent ones are OT periods.
+    //   if (period <= this.tipOffsLogged) return true;
+    //   // overtime periods will be 101, 102, etc. 
+    // }
+    return false;
   }
 
   add(play: Play) {
@@ -80,14 +113,18 @@ export class PlaysLogService {
   }
 
   tipControl(play: Play) {
-    play.tipControlMessage();
-    if (this.mostRecent(play)){
-      this.plays.unshift(play);
-    } else {
-      this.insertPlay(play);
+    //if (!this.alreadyLoggedPeriodMessage("Tip-Off", play.period)) {
+
+      play.tipControlMessage();
+      if (this.mostRecent(play)){
+        this.plays.unshift(play);
+      } else {
+        this.insertPlay(play);
+      }
+      this.tipOffsLogged++;   // shouldn't need this either....
+      this.savePlays();
     }
-    this.savePlays();
-  }
+  //}
 
   jumpBall(play: Play) {
     play.jumpBallMessage();

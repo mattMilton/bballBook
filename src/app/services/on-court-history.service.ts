@@ -3,7 +3,7 @@ import { OnCourt } from '../model/onCourt';
 import { GameService } from './game.service';
 import { Team } from '../model/team';
 import { Player } from '../model/player';
-import { Play } from '../model/play';
+import { Play, PlayType } from '../model/play';
 import { PlaysLogService } from './plays-log.service';
 
 @Injectable({
@@ -18,25 +18,137 @@ export class OnCourtHistoryService {
   constructor(public gameService: GameService,
               public plays: PlaysLogService) { 
 
-     console.log("in on-court-historyService constructor");
-    //  const onCourtData = JSON.parse(localStorage.getItem('onCourtData'));
-    //  this.history = onCourtData.history;
-    //  this.currentlyOnCourtIndex = onCourtData.currentlyOnCourtIndex;
-    //  this.latestOnCourt = onCourtData.latestOnCourt;
+    console.log("in on-court-historyService constructor");
+    const awayStarters = JSON.parse(localStorage.getItem('awayStarters'));
+    const homeStarters = JSON.parse(localStorage.getItem('homeStarters'));
+    
+    if (awayStarters && homeStarters) {
+      
+      // these are onCourt attributes that need to be used to construct the onCourt
+      // period: number;
+      // timeLeft: number;
+      // awayOnCourt: Player[] = [];
+      // homeOnCourt: Player[] = [];
+      // play: Play;
+      
+      // OR create history from scratch by iterating playslog searching for substitutions.
+      
+      // starters to be history[0]
+      var onCourt: OnCourt = new OnCourt();
+      onCourt.period = 1;
+      onCourt.timeLeft = this.gameService.periodMinutes * 60;
+      // away team
+      for (let i = 0; i < awayStarters.length; i++) {
+        var player: Player;
+        for (let j = 0; j < gameService.awayTeam.roster.length; j++) {
+          if (gameService.awayTeam.roster[j].number == awayStarters[i].number) {
+            player = gameService.awayTeam.roster[j];
+            onCourt.awayOnCourt.push(player);
+          }
+        }
+      }
+      // home team
+      for (let i = 0; i < homeStarters.length; i++) {
+        var player: Player;
+        for (let j = 0; j < gameService.homeTeam.roster.length; j++) {
+          if (gameService.homeTeam.roster[j].number == homeStarters[i].number) {
+            player = gameService.homeTeam.roster[j];
+            onCourt.homeOnCourt.push(player);
+          }
+        }
+      }
+      // then pushed to history
+      this.history.push(onCourt);
+      
+      // then all remaining onCourts to be made onCourts and pushed to history
 
+      // iterate all plays
+      for (let i = this.plays.plays.length - 1; i >= 0; i--) {
+
+        
+        // if playtype is sub
+        if (this.plays.plays[i].playType == PlayType.SUB) {
+          var newOnCourt = new OnCourt();
+          let last = this.history.length - 1;
+          newOnCourt.play = this.plays.plays[i];
+          newOnCourt.period = this.plays.plays[i].period;
+          newOnCourt.timeLeft = this.plays.plays[i].minutes * 60 + this.plays.plays[i].seconds;
+
+          if (newOnCourt.play.team == this.gameService.awayTeam) {
+            // copy players from home team
+            this.history[last].homeOnCourt.forEach(player => {
+              newOnCourt.homeOnCourt.push(player);
+            })
+
+            // and iterate away team searching for player to be subbed out and in
+            this.history[last].awayOnCourt.forEach(player => {
+              if (player != newOnCourt.play.secondary) {
+                newOnCourt.awayOnCourt.push(player);
               }
+            })
+            newOnCourt.awayOnCourt.push(newOnCourt.play.primary);
+            // not sure if onCourt requires players to be sorted but...
+            newOnCourt.awayOnCourt.sort((a,b) => a.number-b.number);
+            
+          } else {
+            // copy players from away team
+            this.history[last].awayOnCourt.forEach(player => {
+              newOnCourt.awayOnCourt.push(player);
+            })
+            // and iterate home team searching for player to be subbed out and in
+            this.history[last].homeOnCourt.forEach(player => {
+              if (player != newOnCourt.play.secondary) {
+                newOnCourt.homeOnCourt.push(player);
+              }
+            })
+            newOnCourt.homeOnCourt.push(newOnCourt.play.primary);
+            // not sure if onCourt requires players to be sorted but...
+            newOnCourt.homeOnCourt.sort((a,b) => a.number-b.number);
+          }
+          this.history.push(newOnCourt);
+        }
+        
+        // new onCourt 
+        // copy last previous onCourt, set play to play, period to play.period, 
+        // timeleft to play.timeleft, check play.team to know which team to swap out primary plater
+        // for secondary player or vice versa
+        
+                          //     var onCourt: OnCourt = new OnCourt();
+                          // onCourt.play = this.play;
+                          // onCourt.period = this.play.period;
+                          // onCourt.timeLeft = this.play.minutes * 60 + this.play.seconds;
+                          // this.gameService.awayTeam.onCourt.forEach(player => {
+                          //   onCourt.awayOnCourt.push(player);
+                          // });
+                          // this.gameService.homeTeam.onCourt.forEach(player => {
+                          //   onCourt.homeOnCourt.push(player);
+                          // });
+                          // this.onCourtHistory.add(onCourt);
 
-  saveOnCourtData() {
-    var onCourtData = {
-      history: this.history,
-      currentlyOnCourtIndex: this.currentlyOnCourtIndex,
-      latestOnCourt: this.latestOnCourt
+        // push onCourt to history
+        
+      }
+
+      // after all onCourts recreated and added to history....
+
+      // set currentlyOnCourtIndex by reading time from local storage and send period and timeleft to
+      // getIndexForGameTime which returns an index 
+       // set clock if time in localStorage
+      var timeData = JSON.parse(localStorage.getItem('time'));
+    
+      if (timeData) {
+        console.log("got timeData");
+        var period = timeData.period;
+        var timeLeft = timeData.timeLeft;
+      } else {// shouldn't happen  }
+       }
+        // then set ....
+      this.currentlyOnCourtIndex = this.getIndexForGameTime(period, timeLeft);
+      this.setGameOnCourt(this.currentlyOnCourtIndex);
+        
+      // set latestOnCourt to true or false depending on if last onCourt record of history
+      this.latestOnCourt = (this.currentlyOnCourtIndex == this.history.length - 1);
     }
-    localStorage.setItem('onCourtData', JSON.stringify(onCourtData));
-  }
-
-  deleteHistory() {
-    localStorage.removeItem('onCourtData');
   }
 
   add(onCourt: OnCourt) {
@@ -65,7 +177,7 @@ export class OnCourtHistoryService {
       }
     }
 
-    this.saveOnCourtData();
+    
 
     // below 8 lines only debugging
     console.log(this.history);
@@ -221,8 +333,6 @@ export class OnCourtHistoryService {
 
     
     this.checkSubsequentValidity(index);
-
-    this.saveOnCourtData();
 
     // below logic is only needed to set game on court if/when it isn't told to do so otherwise
     // this would only be the case if latest on course is true

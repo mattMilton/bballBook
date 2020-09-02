@@ -17,7 +17,7 @@ const routes: Routes = [
   { path: 'foul/:period/:minutes/:seconds', loadChildren: './pages/foul/foul.module#FoulPageModule' },
   { path: 'free-throws/:reason/:team/:period/:minutes/:seconds', loadChildren: './pages/free-throws/free-throws.module#FreeThrowsPageModule' },
   { path: 'technical/:period/:minutes/:seconds', loadChildren: './pages/technical/technical.module#TechnicalPageModule' },
-  { path: 'tip-off', loadChildren: './pages/tip-off/tip-off.module#TipOffPageModule' },
+  { path: 'tip-off/:period', loadChildren: './pages/tip-off/tip-off.module#TipOffPageModule' },
   { path: 'add-player/:team', loadChildren: './pages/add-player/add-player.module#AddPlayerPageModule' },
 ];
 

@@ -35,6 +35,10 @@
         <ion-input [(ngModel)]="timeouts"></ion-input>
       </ion-item>
       <ion-item>
+        <ion-label>Overtime Minutes</ion-label>
+        <ion-input [(ngModel)]="overtimeMinutes"></ion-input>
+      </ion-item>
+      <ion-item>
         <ion-label *ngIf="game.awayTeam">{{game.awayTeam.name}} :::: {{game.awayTeam.roster.length}} players</ion-label>
         <ion-label *ngIf="!game.awayTeam">Away Team</ion-label>
         <ion-button (click)=editTeam(1)>Edit Team</ion-button>

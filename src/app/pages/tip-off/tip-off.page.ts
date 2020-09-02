@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { GameService } from 'src/app/services/game.service';
 import { PlaysLogService } from 'src/app/services/plays-log.service';
 import { Play, PlayType } from 'src/app/model/play';
@@ -13,16 +13,19 @@ export class TipOffPage implements OnInit {
 
   play: Play = new Play();
 
-  constructor(
+  constructor( public route: ActivatedRoute,
     public gameService: GameService,
     public router: Router,
     public plays: PlaysLogService) { }
 
   ngOnInit() {
-    // must consider possibility of using this for OT, so setting play period may need be overwritten
-    // with a different method, or another parameter in controlledBy method
-    this.play.period = 1;
-    this.play.minutes = this.gameService.periodMinutes;
+    
+    this.play.period = +this.route.snapshot.paramMap.get('period');
+    if (this.play.period == 1) {
+      this.play.minutes = this.gameService.periodMinutes;
+    } else {
+      this.play.minutes = this.gameService.overtimeMinutes;
+    }
     this.play.seconds = 0;
     this.play.priority = 1;
     this.play.playType = PlayType.TIP;
