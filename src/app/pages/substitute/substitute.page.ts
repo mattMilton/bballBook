@@ -127,7 +127,8 @@ export class SubstitutePage implements OnInit {
     this.plays.substitution(this.play);
 
     this.primaryPlayer.updateMinutes(this.play.period, this.play.minutes, this.play.seconds,
-                                    this.gameService.periodMinutes);
+                                    this.gameService.periodMinutes, this.gameService.periods,
+                                    this.gameService.overtimeMinutes);
 
     // call on gameService to create and add an onCourtHistory record
     // this.gameService.addOnCourtRecord(this.play.period, this.play.minutes * 60 +

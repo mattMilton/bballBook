@@ -107,26 +107,6 @@ export class OnCourtHistoryService {
           }
           this.history.push(newOnCourt);
         }
-        
-        // new onCourt 
-        // copy last previous onCourt, set play to play, period to play.period, 
-        // timeleft to play.timeleft, check play.team to know which team to swap out primary plater
-        // for secondary player or vice versa
-        
-                          //     var onCourt: OnCourt = new OnCourt();
-                          // onCourt.play = this.play;
-                          // onCourt.period = this.play.period;
-                          // onCourt.timeLeft = this.play.minutes * 60 + this.play.seconds;
-                          // this.gameService.awayTeam.onCourt.forEach(player => {
-                          //   onCourt.awayOnCourt.push(player);
-                          // });
-                          // this.gameService.homeTeam.onCourt.forEach(player => {
-                          //   onCourt.homeOnCourt.push(player);
-                          // });
-                          // this.onCourtHistory.add(onCourt);
-
-        // push onCourt to history
-        
       }
 
       // after all onCourts recreated and added to history....
@@ -166,7 +146,7 @@ export class OnCourtHistoryService {
       
       this.checkSubsequentValidity(this.currentlyOnCourtIndex);
 
-      // inserted substitions are the only case in which both platers involved will 
+      // inserted substitions are the only case in which both players involved will 
       // need their subLog re-ordered.
       onCourt.play.primary.sortSubLog();
       onCourt.play.secondary.sortSubLog();

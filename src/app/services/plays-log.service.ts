@@ -12,7 +12,8 @@ export class PlaysLogService {
   playsData: any[] = [];
   startsLogged: number = 0;
   endsLogged: number = 0;
-  tipOffsLogged: number = 0;;
+  tipOffsLogged: number = 0;
+  periods: number;
 
   constructor() {
     console.log("in plays-logService constructor");
@@ -27,6 +28,10 @@ export class PlaysLogService {
       this.tipOffsLogged = periodLogData.tipOffsLogged;
     }
    }
+
+  setPeriods(periods: number) {
+    this.periods = periods;
+  }
 
   savePlays() {
     localStorage.setItem('playsData', JSON.stringify(this.plays));
@@ -206,6 +211,7 @@ export class PlaysLogService {
   }
 
   rewriteFoulMessages(play: Play, index: number) {
+    console.log("in rewriteFoulMessages(), periods: " + this.periods);
     // fix all subsequent foul messages after deleting a foul or inserting one
     // must iterate through array backwards as newest play has lowest index
     // iterate through entire period to count number of team fouls, 
@@ -222,7 +228,8 @@ export class PlaysLogService {
       
       if (curPlay.team == play.team                   // fouls by team
                 && curPlay.playType == PlayType.FOUL) { 
-        if (curPlay.period == play.period) { // same period
+        if (curPlay.period == play.period || // same period
+              (play.period >= this.periods && curPlay.period >= this.periods)) { // or last period or OT 
           teamFouls++;
           console.log("team foul")
           if (i <= index) {  // fouls after deleted 

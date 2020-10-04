@@ -56,7 +56,11 @@ export class FoulPage implements OnInit {
 
   submit(){
     // set team fouls and personal fouls
-    this.teamFouls = ++this.team.fouls[this.play.period - 1];
+    if (this.play.period > this.gameService.periods) {
+      this.teamFouls = ++this.team.fouls[this.gameService.periods - 1];
+    } else {
+      this.teamFouls = ++this.team.fouls[this.play.period - 1];
+    }
     this.fouler.fouls++;
     this.play.primary = this.fouler;
     this.play.type = "Defensive Foul";

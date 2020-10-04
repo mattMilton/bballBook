@@ -23,6 +23,9 @@ export class PlaysComponent implements OnInit {
   // periodsArr:number[] = [];
   // periodSelected = 0;
 
+  // **********most commented below to do with future tabs feature. 
+  // ***********needs consideration for overtime possibility
+
   constructor(public plays: PlaysLogService) { }
 
   ngOnInit(

@@ -161,12 +161,26 @@ export class FreeThrowsPage implements OnInit {
 
   setType() {
     if (this.reason == "team-fouls") {
+      console.log("in setType()");
       if (this.gameService.teamFouls == TeamFouls.PENALTY) {
         this.type = FreeThrowsType.TWO;
       } else if (this.gameService.teamFouls == TeamFouls.BOTH) {
         this.setFoulingTeam();
-        if (this.foulingTeam.fouls[this.play.period - 1]  >= this.gameService.penalty) {
-          this.type = FreeThrowsType.TWO;
+        // in overtime, check final period team fouls
+        if (this.play.period > this.gameService.periods) {
+          if (this.foulingTeam.fouls[this.gameService.periods - 1] >= this.gameService.penalty) {
+            this.type = FreeThrowsType.TWO;
+            console.log("in OT and over Penalty");
+          } else {
+            this.type = FreeThrowsType.ONE_AND_ONE;
+          }  
+        } else { // not in overtime, check fouls for play's period
+          if (this.foulingTeam.fouls[this.play.period - 1]  >= this.gameService.penalty) {
+            this.type = FreeThrowsType.TWO;
+            console.log("not in OT and over Penalty");
+          } else {
+            this.type = FreeThrowsType.ONE_AND_ONE;
+          }
         }
       } else {
         this.type = FreeThrowsType.ONE_AND_ONE;

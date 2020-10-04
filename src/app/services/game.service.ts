@@ -112,6 +112,9 @@ export class GameService {
   
         // push to plays.plays
         this.plays.plays.push(play);
+
+        // and give playsLogService number of periods
+        this.plays.setPeriods(this.periods);
       }
       
     }
@@ -161,6 +164,7 @@ export class GameService {
   setPeriods(periods: number, periodMinutes: number) {
     this.periods = periods;
     this.periodMinutes = periodMinutes;
+    this.plays.setPeriods(periods);
   }
 
   setTeamFouls(bonus: number, penalty: number) {

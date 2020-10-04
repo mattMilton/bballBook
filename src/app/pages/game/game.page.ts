@@ -173,7 +173,11 @@ export class GamePage implements OnInit {
     // attributes
     switch (play.playType) {
       case PlayType.FOUL:
-        play.team.fouls[play.period - 1]--;
+        if (play.period > this.periods) {
+          play.team.fouls[this.periods - 1]--;
+        } else {
+          play.team.fouls[play.period - 1]--;
+        }
         play.primary.fouls--;
         this.plays.rewriteFoulMessages(play, playIndex);
         break;
@@ -386,11 +390,13 @@ export class GamePage implements OnInit {
     this.gameService.awayTeam.onCourt.forEach(player => {
         console.log("player update minutes: " + player.name);
         player.updateMinutes(this.timerReference.period, this.timerReference.getMinutes(), 
-          this.timerReference.getSeconds(), this.gameService.periodMinutes);
+          this.timerReference.getSeconds(), this.gameService.periodMinutes, 
+          this.gameService.periods, this.gameService.overtimeMinutes);
     });
     this.gameService.homeTeam.onCourt.forEach(player => {
       player.updateMinutes(this.timerReference.period, this.timerReference.getMinutes(), 
-        this.timerReference.getSeconds(), this.gameService.periodMinutes);
+        this.timerReference.getSeconds(), this.gameService.periodMinutes,
+        this.gameService.periods, this.gameService.overtimeMinutes);
     });
 
   }

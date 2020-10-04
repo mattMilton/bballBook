@@ -78,6 +78,11 @@ export class TimerComponent implements OnInit {
                 this.timeLeft = this.gameService.overtimeMinutes * 60;
                 clearInterval(this.interval);
                 this.clockRunning = false;
+              } else {
+                // should have something done here reporting end of last period, at 
+                // very least for plays log. gameService.endOfRegulation could deal 
+                // with setting a value in gameService about game being over, 
+                // and that could be referenced for end game options stuff
               }
             }
           }
@@ -108,7 +113,11 @@ export class TimerComponent implements OnInit {
 
   incMinutes() {
     this.timeLeft += 60;
-    if (this.timeLeft > this.periodMinutes * 60) {
+    if (this.period > this.gameService.periods) {
+      if (this.timeLeft > this.gameService.overtimeMinutes * 60) {
+        this.timeLeft = this.gameService.overtimeMinutes * 60;
+      }
+    } else if (this.timeLeft > this.periodMinutes * 60) {
       this.timeLeft = this.periodMinutes * 60;
     }
     this.timeChange.emit({ event: event, period: this.period, timeLeft: this.timeLeft });
@@ -124,7 +133,12 @@ export class TimerComponent implements OnInit {
   }
 
   incSeconds() {
-    if (this.timeLeft < this.periodMinutes * 60) {
+    if (this.period > this.gameService.periods) {
+      if (this.timeLeft < this.gameService.overtimeMinutes * 60) {
+        this.timeLeft++;
+      } 
+    } 
+    else if (this.timeLeft < this.periodMinutes * 60) {
       this.timeLeft++;
     }
     this.timeChange.emit({ event: event, period: this.period, timeLeft: this.timeLeft });
@@ -140,7 +154,7 @@ export class TimerComponent implements OnInit {
   }
   
   incPeriod() {
-    if (this.period < this.gameService.periods) {
+    if (this.period < this.gameService.periods + this.gameService.overtimePeriods) {
       this.period++;
       // when incrementing period, we must check to see if period end and start have been logged.
       // otherwise log will not show period messages and possession arrow will not be correct.
@@ -149,6 +163,12 @@ export class TimerComponent implements OnInit {
       }
       if (!this.plays.alreadyLoggedPeriodMessage("Start", this.period)) {
         this.periodStart.emit({ event: event, period: this.period});
+      }
+      if (this.period > this.gameService.periods) {
+        // incremented into an overtime period. clock must be at max time of the Overtime Minutes
+        if (this.timeLeft > this.gameService.overtimeMinutes * 60) {
+          this.timeLeft = this.gameService.overtimeMinutes * 60;
+        }
       }
     }
     if (!this.onCourtHistory.latestOnCourt) {

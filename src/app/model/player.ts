@@ -58,10 +58,11 @@ export class Player {
     }
 
     updateMinutes(period: number, minutes: number, seconds: number, 
-                    periodLength: number) {
+                    periodLength: number, numPeriods: number, otPeriodLength: number) {
 
         let secondsPlayed = 0;               
         var lastIn = new Substitution();
+        const regOtPeriodDiff = periodLength - otPeriodLength;
 
         // iterate the sub log, assign each sub-in as the new lastIn, 
         // each sub-out is then subtracted from the last sub-in 
@@ -88,13 +89,27 @@ export class Player {
                 // increment this.seconds by period length in seconds times
                 // difference in lastIn period and sub period (player played through
                 // at least on period change)
-                let lastInPeriod = lastIn.period;
-                let subOutPeriod = sub.period;
-                let fullPeriodSeconds = periodLength * 60;
-                
-                let periodSecondsToAdd = (subOutPeriod - lastInPeriod) * fullPeriodSeconds;
-                
-                secondsPlayed += periodSecondsToAdd;
+                if (lastIn.period != sub.period) {
+
+                    let fullPeriodSeconds = periodLength * 60;                    
+                    let periodSecondsToAdd = (sub.period - lastIn.period) * fullPeriodSeconds;
+                    
+                    secondsPlayed += periodSecondsToAdd;
+    
+                    // need to subtract 60 seconds for each minute that ovetime periods is less 
+                    // than reg periods, for each overtime period player started
+                    if (sub.period > numPeriods) {
+                        
+                        let periodsStarted = (sub.period - lastIn.period);
+                        let regulationPeriods;
+                        if (lastIn.period < numPeriods) { // at least one period started wasn't OT
+                            regulationPeriods = numPeriods - lastIn.period;
+                        } 
+                        let otPeriodsStarted = periodsStarted - regulationPeriods;
+
+                        secondsPlayed -= otPeriodsStarted * regOtPeriodDiff * 60;
+                    }
+                }
                 
             } 
         });
@@ -121,11 +136,28 @@ export class Player {
             // difference in lastIn period and current period (player has been 
             // playing through at least one period change)
             let lastInPeriod = this.subLog[this.subLog.length -1].period;
-            let fullPeriodSeconds = periodLength * 60;
 
-            let periodSecondsToAdd = (period - lastInPeriod) * fullPeriodSeconds;
+            if (period != lastInPeriod) { // started at least one period in span
+                
+                let fullPeriodSeconds = periodLength * 60;
+                let periodSecondsToAdd = (period - lastInPeriod) * fullPeriodSeconds;
+    
+                secondsPlayed += periodSecondsToAdd;
+    
+                // need to subtract 60 seconds for each minute that ovetime periods is less 
+                // than reg periods, for each overtime period player started
+                if (period > numPeriods) {
 
-            secondsPlayed += periodSecondsToAdd;
+                    let periodsStarted = (period - lastInPeriod);
+                    let regulationPeriods;
+                    if (lastInPeriod < numPeriods) { // at least one period started wasn't OT
+                        regulationPeriods = numPeriods - lastInPeriod;
+                    }
+                    let otPeriodsStarted = periodsStarted - regulationPeriods;
+
+                    secondsPlayed -= (period - numPeriods) * regOtPeriodDiff * 60;
+                }
+            }
 
             this.minutes = Math.round(secondsPlayed / 60);
             console.log(Math.round(secondsPlayed / 60));
