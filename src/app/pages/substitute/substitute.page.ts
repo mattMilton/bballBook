@@ -56,6 +56,9 @@ export class SubstitutePage implements OnInit {
 
   sub(player: Player) {
     this.secondaryPlayer = player;
+  }
+
+  confirmSub() {
     this.play.playType = PlayType.SUB;
     
     // swap primary and secondary player
@@ -130,7 +133,7 @@ export class SubstitutePage implements OnInit {
                                     this.gameService.periodMinutes, this.gameService.periods,
                                     this.gameService.overtimeMinutes);
 
-    // call on gameService to create and add an onCourtHistory record
+    // call gameService to create and add an onCourtHistory record
     // this.gameService.addOnCourtRecord(this.play.period, this.play.minutes * 60 +
     //                                         this.play.seconds);
 
@@ -149,10 +152,21 @@ export class SubstitutePage implements OnInit {
 
     // navigate back to game page
     this.gameService.saveGameData();
+
+    // var for distinct param to force ngOnit
+    // var distinct = this.play.period * 100 + this.play.minutes * 10 + this.play.seconds;
+
     this.router.navigate(['game']);
   }
 
   noSub() {
+    // var for distinct param to force ngOnit
+    // var distinct = this.play.period * 100 + this.play.minutes * 10 + this.play.seconds;
+
     this.router.navigate(['game']);
+  }
+
+  help() {
+    this.router.navigate(['/help']);
   }
 }

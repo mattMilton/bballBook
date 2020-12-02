@@ -156,7 +156,7 @@ export class FreeThrowsPage implements OnInit {
     this.ftSuccess[ftNum - 1] = madeString;
     this.ftSuccess.length = ftNum;
     this.setNext(made, ftNum);
-    console.log("Free throw: " + ftNum + this.ftSuccess[ftNum - 1]);
+    console.log("Free Throw: " + ftNum + this.ftSuccess[ftNum - 1]);
   }
 
   setType() {
@@ -291,7 +291,7 @@ export class FreeThrowsPage implements OnInit {
         this.play.secondary = this.assist;
       }
       
-      this.play.extra = "Fouled on the shot";
+      this.play.extra = "Fouled on the Shot";
       this.plays.add(this.play);
     }
 
@@ -356,6 +356,32 @@ export class FreeThrowsPage implements OnInit {
 
     // navigate back to game page
     this.gameService.saveGameData();
+
+    this.team = null;
+    this.reason = null;
+    this.type = null;
+    this.typeString = null;
+    this.fgMade = null;
+    this.fgMissedType = null;
+    this.fgMadeType = null;
+    this.typeSet = null;
+    this.shooter = null;
+    this.assist = null;
+    this.assistQuery = null;
+    this.freeThrowsReady = null;
+    this.foulingTeam = null;
+    this.ftSuccess = [];
+    this.next = null;
+    this.madeFrontEnd = null;
+    this.play = new Play();
+    this.rebounder = null;
+    this.reboundingTeam = null;
+    this.rebounderSet = null;
+
     this.router.navigate(['/game']);
+  }
+
+  help() {
+    this.router.navigate(['/help']);
   }
 }

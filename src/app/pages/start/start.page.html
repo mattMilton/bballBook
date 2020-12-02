@@ -1,16 +1,144 @@
-<ion-header>
-  <!-- <ion-toolbar>
+<ion-header hidden>
+  <ion-toolbar>
     <ion-title>Basketball Bookkeeper</ion-title>
-  </ion-toolbar> -->
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
 
-  <div class="container">
-      <img src="../../assets/img/bball.jpg" alt="Snow">
+  <!-- <div class="container">
+      <img src="../../assets/img/floor.jpg" alt="Snow">
 
    
       <button class="btn" (click)="letsGo()">Let's Go!!</button>
-  </div>
+  </div> -->
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-row >
+          <ion-col>
+            <ion-row class="transparent">
+              <h1>Big Red Stats</h1><br>
+            </ion-row>
+            <ion-row class="transparent">
+              <h2>Online Basketball Bookkeeper</h2>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-row>
+          <p>Welcome! You have found the greatest free online basketball bookkeeping app. The app helps 
+            you keep track of any and all basketball statistics with a very easy to use interface. When 
+            anything happens in the game you are keeping, whether a turnover, a made basket, a foul, or 
+            anthying else, just hit the button for the type of play. For a complete guide, check out the 
+            <a href="help">help page</a>.
+          </p>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-row>
+          <p>Or, if either you are familiar enough with the app or just want to jump in, hit the button below 
+            to get started. 
+          </p>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-button expand="block" (click)="letsGo()">Get Started</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-row>
+          <ion-col class="ion-text-center"><ion-icon name="basketball" class="ball-icon"></ion-icon></ion-col>
+          <ion-col class="ion-text-center"><ion-icon name="basketball" class="ball-icon"></ion-icon></ion-col>
+          <ion-col class="ion-text-center"><ion-icon name="basketball" class="ball-icon"></ion-icon></ion-col>
+          <ion-col class="ion-text-center"><ion-icon name="basketball" class="ball-icon"></ion-icon></ion-col>
+          <ion-col class="ion-text-center"><ion-icon name="basketball" class="ball-icon"></ion-icon></ion-col>
+          <ion-col class="ion-text-center"><ion-icon name="basketball" class="ball-icon"></ion-icon></ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-row>
+          <p>With Big Red Stats Online Basketball Bookkeeper you are able to easily keep track of all stats 
+            in a basketball game. However, this is the premier version of the application, so there are some
+            things that are still in the works. Below is a list of the features we will be 
+            adding in future versions. 
+          </p>
+          <ul>
+            <li>
+              <ion-icon name="basketball" class="ball-icon"></ion-icon>
+              <ion-label>
+                <b>Accounts</b>
+              </ion-label>              
+              <p>
+                Many wanted features will require user accounts. The ability to save and load frequently used
+                teams is among the most desired. Also, with accounts, recalling saved stats and displaying averages
+                will be enjoyed. Another account based feature will be the ability to grant your friends with accounts
+                permission to observe games you are recording in real time.
+              </p>
+            </li>
+            <li>
+              <ion-icon name="basketball" class="ball-icon"></ion-icon>
+              <ion-label>
+                <b>More Settings</b>
+              </ion-label>
+              <p>
+                In game settings, future versions will allow you more detailed control of timeouts (whether certain number
+                per half, or last x number of minutes, etc.). Game date and time will be recorded once game stats are being saved to 
+                accounts. In team setup, we are working on allowing you to select a color for each team, as well as selecting which
+                players are starters. 
+              </p>
+            </li>
+            <li>
+              <ion-icon name="basketball" class="ball-icon"></ion-icon>
+              <ion-label>
+                <b>Run-time Options</b>
+              </ion-label>
+              <p>
+                The plan is to allow you options for run-time. Once these options are in place, we will also implement 
+                the auto-stop and auto-start features of the time clock. Currently, you are responsible for stopping and 
+                starting the clock. However, the auto-stop and auto-start features will still rely on you to to start 
+                the clock much of the time. Because of that, we want to have a different color background and clock when time
+                is stopped to help remind you to start the clock. 
+              </p>
+            </li>
+            <li>
+              <ion-icon name="basketball" class="ball-icon"></ion-icon>
+              <ion-label>
+                <b>Scoreboard Changes</b>
+              </ion-label>
+              <p>
+                Currently, everything on the scoreboard is accurate to the latest recorded event. When the clock is adjusted,
+                the scoreboard does not reflect the state of the game at the time shown on the scoreboard. This feature is being
+                considered. Also being considered is removing the 'MadeFG' buttons, and the 'Foul' button. The user would then 
+                need to click on the team's score or fouls on the scoreboard to initiate the events. This would leave only there
+                or four buttons below the scoreboard. 
+              </p>
+            </li>
+            <li>
+              <ion-icon name="basketball" class="ball-icon"></ion-icon>
+              <ion-label>
+                <b>Play Log</b>
+              </ion-label>
+              <p>
+                We want to include tabs for each game period in the Plays log in the Game page. You will then be able
+                to look at plays in specific periods, or the entire game. We also would like to include a log of plays in the 
+                player detail page. Every play in which the player recorded a stat or a substition would be inclded in their play log.
+              </p>
+            </li>          
+          </ul>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
   
 </ion-content>

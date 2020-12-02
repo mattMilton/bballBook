@@ -1,0 +1,47 @@
+ion-col ion-row {
+    height: 55px;
+    padding: 10px;
+}
+
+.in-boxes ion-row {
+    height: 55px;
+    padding: 0;
+}
+
+.message ion-row {
+    height: auto;
+}
+
+.head {
+    font-size: 28px;
+}
+
+@media screen and (max-width: 767px) {
+    ion-col ion-row {
+        height: 45px;
+        padding: 7px;
+    }
+
+    .in-boxes ion-row {
+        height: 45px;
+    }
+
+    .head {
+        font-size: 24px;
+    }
+}
+
+@media screen and (max-width: 479px) {
+    ion-col ion-row {
+        height: 35px;
+        padding: 5px;
+    }
+
+    .in-boxes ion-row {
+        height: 35px;
+    }
+
+    .head {
+        font-size: 20px;
+    }
+}

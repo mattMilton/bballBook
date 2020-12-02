@@ -1,55 +1,131 @@
-<ion-header>
-    <ion-toolbar>
-      <ion-title>Turnover</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-header hidden>
+  <ion-toolbar>
+    <ion-title>Turnover</ion-title>
+  </ion-toolbar>
+</ion-header>
   
-  <ion-content>
-      <ion-grid>
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-row class="input-query">
+          <ion-label>Turnover By?</ion-label>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-row class="team">
+          <ion-label>{{gameService.homeTeam.name}}</ion-label>
+        </ion-row>
+        <ion-row *ngFor="let player of gameService.homeTeam.onCourt" class="ion-align-items-center"
+            [ngClass]="{'selected': player===committer}">
+          <ion-col size="2">
+            <div class="number-button">
+              <ion-button (click)="turnoverBy(player, gameService.homeTeam)">{{player.number}}</ion-button>
+            </div>
+          </ion-col>
+          <ion-col>
+            <ion-label>{{player.name}}</ion-label>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+      <ion-col>
+        <ion-row class="team">
+          <ion-label>{{gameService.awayTeam.name}}</ion-label>
+        </ion-row>
+        <ion-row *ngFor="let player of gameService.awayTeam.onCourt" class="ion-align-items-center"
+            [ngClass]="{'selected': player===committer}">
+          <ion-col size="2">
+            <div class="number-button">
+              <ion-button (click)="turnoverBy(player, gameService.awayTeam)">{{player.number}}</ion-button>
+            </div>
+          </ion-col>
+          <ion-col>
+            <ion-label>{{player.name}}</ion-label>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="committer">
+      <ion-col>
+        <ion-row class="input-query">
+          <ion-label>Offensive Foul?</ion-label>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="committer">
+      <ion-col>
         <ion-row>
           <ion-col>
-            <ion-row>{{gameService.awayTeam.name}}</ion-row>
-            <ion-row *ngFor="let player of gameService.awayTeam.onCourt">
-              <ion-button (click)="turnoverBy(player, gameService.awayTeam)">{{player.number}}</ion-button>
-            </ion-row>
-          </ion-col>
-          <ion-col>
-            <ion-row>{{gameService.homeTeam.name}}</ion-row>
-            <ion-row *ngFor="let player of gameService.homeTeam.onCourt">
-              <ion-button (click)="turnoverBy(player, gameService.homeTeam)">{{player.number}}</ion-button>
-            </ion-row>
+            <div class="sm-text-button" [ngClass]="{'selected': offensive}">
+              <ion-button (click)="offensiveFoul(true)">Yes</ion-button>
+            </div>
           </ion-col>
         </ion-row>
-        <ion-row *ngIf="player">Turnover By: {{team?.name}} Number: {{player?.number}}</ion-row>
-        <ion-row *ngIf="player"><h3>Offensive Foul?</h3><br />
-          <ion-button (click)="offensiveFoul(true)">Yes</ion-button>
-          <ion-button (click)="offensiveFoul(false)">No</ion-button> 
-        </ion-row>
-
-        <ion-row *ngIf="offensive">Offensive Foul<br />
-        <ion-button (click)="submit()">Submit</ion-button>
-
-        </ion-row>
-
-        <ion-row *ngIf="offensive == false">
+      </ion-col>
+      <ion-col>
+        <ion-row>
           <ion-col>
-            <h3>Stolen By?</h3>
-            <ion-row *ngFor="let player of stealerTeam?.onCourt">
+            <div class="sm-text-button" [ngClass]="{'selected': offensive===false}">
+              <ion-button (click)="offensiveFoul(false)">No</ion-button> 
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    
+    <ion-row *ngIf="offensive">
+      <ion-col>
+        <ion-row>
+          <ion-col>
+            <ion-button expand="block" (click)="submit()">Submit</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="offensive == false">
+      <ion-col>
+        <ion-row class="input-query">
+          <ion-label>Stolen By?</ion-label>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="offensive==false">
+      <ion-col>
+        <ion-row *ngFor="let player of stealerTeam?.onCourt" class="ion-align-items-center"
+            [ngClass]="{'selected': player===stealer}">
+          <ion-col size="2">
+            <div class="number-button">
               <ion-button (click)="stolenBy(player)">{{player.number}}</ion-button>
-            </ion-row>
-            <ion-row>
-              <ion-button (click)="stolenBy(null)">Not Stolen</ion-button>
-            </ion-row>
-
+            </div>
+          </ion-col>
+          <ion-col>
+            <ion-label>{{player.name}}</ion-label>
           </ion-col>
         </ion-row>
-
-        <ion-row *ngIf="stealer">Stolen By: {{stealerTeam.name}} Number: {{stealer?.number}}</ion-row>
-        <ion-row *ngIf="stealer == null && stealerSet == true">Not Stolen</ion-row>
-        
-        <ion-row *ngIf="stealerSet">
-          <ion-button (click)="submit()">Submit</ion-button>
+        <ion-row class="sm-text-button" [ngClass]="{'selected': stealerSet && stealer===null}">
+          <ion-col>
+            <ion-button (click)="stolenBy(null)">Not Stolen</ion-button>
+          </ion-col>
         </ion-row>
-
-      </ion-grid>
-    </ion-content>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="stealerSet">
+      <ion-col>
+        <ion-row>
+          <ion-col>
+            <ion-button expand="block" (click)=submit()>Submit</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-justify-content-end">     
+      <ion-col size="auto">
+        <div class="sm-text-button">
+          <ion-button expand="block" (click)="help()">Help</ion-button>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

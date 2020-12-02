@@ -24,3 +24,134 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+ion-content {
+    --background: #fff url("assets/img/floor.jpg");
+    font-family: Arial, Helvetica, sans-serif; 
+}
+
+ion-grid {
+     font-size: 23px;
+     --ion-grid-padding: 0px;
+     --ion-grid-column-padding: 0px;
+}
+
+ion-row { 
+    background-color: rgba(255, 255, 255, .5);
+    margin: 10px;
+    border-radius: 12px;
+}
+
+.input-query {
+    padding: 10px;
+}
+
+.team {
+    padding: 10px;
+}
+
+.selected {
+    background-color: green;
+}
+
+p {
+    margin: 10px;
+}
+
+.transparent {
+    background-color: transparent;
+    margin: 0;
+}
+
+.number-button ion-button {
+    width: 45px;
+    height: 45px;
+}
+
+.remove-button ion-button {
+    height: 45px;
+    width: 45px;
+}
+
+ion-button {
+    font-size: 14px;
+}
+
+.player-detail ion-label{
+    font-size: 41px;
+}
+
+.player-detail-team ion-label {
+    font-size: 35px;
+}
+
+@media screen and (max-width: 767px) {
+    ion-grid {
+        font-size: 20px;    
+    }
+
+    ion-row {
+        margin: 7px;
+        border-radius: 9px;
+    }
+
+    .number-button ion-button {
+        width: 25px;
+        height: 25px;
+    }
+
+    .remove-button ion-button {
+        width: 35px;
+        height: 35px;
+    }
+
+    ion-button {
+        font-size: 10px;
+    }
+
+    .player-detail ion-label{
+        font-size: 35px;
+    }
+    
+    .player-detail-team ion-label {
+        font-size: 30px;
+    }
+}
+
+@media screen and (max-width: 479px) {
+    ion-grid {
+        font-size: 16px;    
+    }
+
+    ion-row {
+        margin: 7px;
+        border-radius: 7px;
+    }
+
+    .number-button ion-button {
+        width: 20px;
+        height: 20px;
+    }
+
+    .remove-button ion-button {
+        width: 26px;
+        height: 26px;
+    }
+
+    ion-button {
+        font-size: 9px;
+    }
+
+    .sm-text-button ion-button {
+        height: 25px;
+    }
+
+    .player-detail ion-label{
+        font-size: 28px;
+    }
+    
+    .player-detail-team ion-label {
+        font-size: 24px;
+    }
+}
+

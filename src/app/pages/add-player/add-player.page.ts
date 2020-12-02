@@ -59,4 +59,8 @@ export class AddPlayerPage implements OnInit {
 
     
   }
+
+  help() {
+    this.router.navigate(['/help']);
+  }
 }

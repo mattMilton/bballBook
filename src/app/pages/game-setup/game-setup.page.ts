@@ -157,5 +157,8 @@ export class GameSetupPage implements OnInit {
     this.router.navigate(['/team-edit/' + awayOrHome])
   }
 
+  help() {
+    this.router.navigate(['/help']);
+  }
 }
 

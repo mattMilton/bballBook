@@ -5,7 +5,6 @@ const routes: Routes = [
   { path: '', redirectTo: 'start', pathMatch: 'full' },
   { path: 'start', loadChildren: './pages/start/start.module#StartPageModule' },
   { path: 'game-setup', loadChildren: './pages/game-setup/game-setup.module#GameSetupPageModule' },
-  { path: 'team-setup', loadChildren: './pages/team-setup/team-setup.module#TeamSetupPageModule' },
   { path: 'team-edit/:id', loadChildren: './pages/team-edit/team-edit.module#TeamEditPageModule' },
   // { path: 'game', redirectTo: 'game/' },
   // { path: 'game/:clockstop', loadChildren: './pages/game/game.module#GamePageModule' },
@@ -19,6 +18,7 @@ const routes: Routes = [
   { path: 'technical/:period/:minutes/:seconds', loadChildren: './pages/technical/technical.module#TechnicalPageModule' },
   { path: 'tip-off/:period', loadChildren: './pages/tip-off/tip-off.module#TipOffPageModule' },
   { path: 'add-player/:team', loadChildren: './pages/add-player/add-player.module#AddPlayerPageModule' },
+  { path: 'help', loadChildren: './pages/help/help.module#HelpPageModule' },
 ];
 
 @NgModule({

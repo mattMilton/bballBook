@@ -1,166 +1,505 @@
-<ion-header>
+<ion-header hidden>
   <ion-toolbar>
     <ion-title>Free Throws</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
   <ion-grid>
+    <div *ngIf="reason=='shooting'">
+      <ion-row>
+        <ion-col>
+          <ion-row class="input-query">
+            <ion-label>{{team.name}} Fouled on the Shot</ion-label>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-row class="input-query">
+            <ion-label>Did Shooter Make Field Goal?</ion-label>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-row>
+            <ion-col>
+              <div class="sm-text-button" [ngClass]="{'selected': fgMade}">
+                <ion-button (click)="fieldGoalMade(true)">Yes</ion-button> 
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+        <ion-col>
+          <ion-row>
+            <ion-col>
+              <div class="sm-text-button" [ngClass]="{'selected': fgMade===false}">
+                <ion-button (click)="fieldGoalMade(false)">No</ion-button>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="fgMade == false">
+        <ion-col>
+          <ion-row class="input-query">
+            <ion-label>What Type of Field Goal Was Missed?</ion-label>
+          </ion-row>
+        </ion-col>   
+      </ion-row>
+      <ion-row *ngIf="fgMade==false">
+        <ion-col>
+          <ion-row>
+            <ion-col>
+              <div class="sm-text-button" [ngClass]="{'selected': fgMissedType==2}">
+                <ion-button (click)="fgType(2)">2 Pointer</ion-button>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+        <ion-col>
+          <ion-row>
+            <ion-col>
+              <div class="sm-text-button" [ngClass]="{'selected': fgMissedType==3}">
+                <ion-button (click)="fgType(3)">3 Pointer</ion-button>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="fgMade == true">
+        <ion-col>
+          <ion-row class="input-query">
+            <ion-label>What Type of Field Goal Was Made?</ion-label>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="fgMade == true">
+        <ion-col>
+          <ion-row>
+            <ion-col>
+              <div class="sm-text-button" [ngClass]="{'selected': fgMadeType==2}">
+                <ion-button (click)="fgType(2)">2 Pointer</ion-button>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+        <ion-col>
+          <ion-row>
+            <ion-col>
+              <div class="sm-text-button" [ngClass]="{'selected': fgMadeType==3}">
+                <ion-button (click)="fgType(3)">3 Pointer</ion-button>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="fgMadeType">      
+        <ion-col>
+          <ion-row class="input-query">
+            <ion-label>Shooter?</ion-label>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="fgMissedType">
+        <ion-col>
+          <ion-row class="input-query">
+            <ion-label>Shooter?</ion-label>
+          </ion-row>
+        </ion-col>
+      </ion-row>    
+    </div>
 
-    <ion-row>
-      <h3>{{team.name}}</h3>
-    </ion-row> 
-    <ion-row *ngIf="reason == 'shooting'">Shooting Foul<br />
-      <h3>Did Shooter Make Field Goal?</h3><br />
-      <ion-button (click)="fieldGoalMade(true)">Yes</ion-button>
-      <ion-button (click)="fieldGoalMade(false)">No</ion-button>
+    <ion-row *ngIf="reason == 'team-fouls'">
+      <ion-col>
+        <ion-row class="input-query">
+          <ion-label>Team Fouls Limit Reached</ion-label>
+        </ion-row>
+      </ion-col>
     </ion-row>
-    <ion-row *ngIf="fgMade == false">
-      <h3>What Type of Field Goal Was Missed</h3><br />
-      <ion-button (click)="fgType(2)">2 Pointer</ion-button>
-      <ion-button (click)="fgType(3)">3 Pointer</ion-button>
+    <ion-row *ngIf="reason == 'team-fouls'">
+      <ion-col>
+        <ion-row class="input-query">
+          <ion-label>Shooter?</ion-label>
+        </ion-row>
+      </ion-col>
     </ion-row>
-    <ion-row *ngIf="fgMade == true">Field Goal Made<br />
-      <h3>What Type of Field Goal Was Made</h3><br />
-      <ion-button (click)="fgType(2)">2 Pointer</ion-button>
-      <ion-button (click)="fgType(3)">3 Pointer</ion-button>
+
+    <ion-row *ngIf="reason=='team-fouls'">
+      <ion-col>
+        <ion-row *ngFor="let player of team.onCourt" class="ion-align-items-center"
+            [ngClass]="{'selected': player===shooter}">
+          <ion-col size="2">
+            <div class="number-button">
+              <ion-button (click)="ftShooter(player)">{{player.number}}</ion-button>
+            </div>
+          </ion-col>
+          <ion-col>
+            <ion-label>{{player.name}}</ion-label>
+          </ion-col>
+        </ion-row>
+      </ion-col>
     </ion-row>
-    <ion-row *ngIf="fgMadeType">{{fgMadeType}} Field Goal Attempt Made<br />
-      <h3>Shooter?</h3>
-      
+
+    <ion-row *ngIf="reason=='technical'">
+      <ion-col>
+        <ion-row class="input-query">
+          <ion-label *ngIf="gameService.technicals > 1">Player to Shoot Technical Free Throws?</ion-label>
+          <ion-label *ngIf="gameService.technicals==1">Player to Shoot Technical Free Throw?</ion-label>
+        </ion-row>
+      </ion-col>
     </ion-row>
-    <ion-row *ngIf="fgMissedType">{{fgMissedType}} Field Goal Attempt Missed<br />
-      <h3>Shooter?</h3>
-    </ion-row>
-    <ion-row *ngIf="reason == 'team-fouls'">Team Fouls Limit Reached<br />
-      <h3>Shooter?</h3><br />
-      <ion-row *ngFor="let player of team.onCourt">
-        <ion-button (click)="ftShooter(player)">{{player.number}}</ion-button>
-      </ion-row>
-    </ion-row>
+
     <ion-row *ngIf="typeSet">
-      <ion-row *ngFor="let player of team.onCourt">
-        <ion-button (click)="ftShooter(player)">{{player.number}}</ion-button>
-      </ion-row>
+      <ion-col>
+        <ion-row *ngFor="let player of team.onCourt" class="ion-align-items-center"
+            [ngClass]="{'selected': player===shooter}">
+          <ion-col size="2">
+            <div class="number-button">
+              <ion-button (click)="ftShooter(player)">{{player.number}}</ion-button>
+            </div>
+          </ion-col>
+          <ion-col>
+            <ion-label>{{player.name}}</ion-label>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+       
+    <ion-row *ngIf="assistQuery">
+      <ion-col>
+        <ion-row class="input-query">
+          <ion-label>Assisted By?</ion-label>
+        </ion-row>              
+      </ion-col>
     </ion-row>
     <ion-row *ngIf="assistQuery">
       <ion-col>
-        <h3>Assisted By?</h3>
-        <ion-row *ngFor="let player of team?.onCourt">
-          <ion-button *ngIf="player != shooter" (click)="assistedBy(player)">{{player.number}}</ion-button>
-        </ion-row>
-        <ion-row>
+        <div *ngFor="let player of team?.onCourt">
+          <ion-row *ngIf="player != shooter" class="ion-align-items-center"
+              [ngClass]="{'selected': player===assist}">
+            <ion-col size="2">
+              <div class="number-button">
+                <ion-button (click)="assistedBy(player)">{{player.number}}</ion-button>
+              </div>
+            </ion-col>
+            <ion-col>
+              <ion-label>{{player.name}}</ion-label>
+            </ion-col>
+          </ion-row>
+        </div>
+        <ion-row class="sm-text-button" [ngClass]="{'selected': freeThrowsReady && assist===null}">
           <ion-button (click)="assistedBy(null)">Unassisted</ion-button>
         </ion-row>
       </ion-col>
     </ion-row>
-    <ion-row *ngIf="freeThrowsReady">
-      <ion-col>
-        <ion-row>
-          At the line: {{team.name}} number {{shooter.number}} Shooting: {{typeString}}
-        </ion-row>
-        <ion-row *ngIf="assist">
-          Assisted by: number {{assist.number}}
-        </ion-row>
-        <ion-row *ngIf="typeString == 'One'">
-          <h3>Free Throw Made?</h3><br />
-          <ion-button (click)="ftMade(true, 1)">Yes</ion-button>
-          <ion-button (click)="ftMade(false, 1)">No</ion-button>
-          <h3 *ngIf="ftSuccess.length > 0">Free Throw {{ftSuccess[0]}}</h3>
-        </ion-row>
-        <ion-row *ngIf="typeString == 'One and One'">
-          <ion-col>
-            <ion-row>
-              <h3>Front End of Bonus Free Throw Made?</h3><br />
-              <ion-button (click)="ftMade(true, 1)">Yes</ion-button>
-              <ion-button (click)="ftMade(false, 1)">No</ion-button>
-              <h3 *ngIf="ftSuccess.length > 0">Free Throw {{ftSuccess[0]}}</h3>
-            </ion-row>
-            <ion-row *ngIf="madeFrontEnd">
-              <h3>Second Free Throw of Bonus Made?</h3><br />
-              <ion-button (click)="ftMade(true, 2)">Yes</ion-button>
-              <ion-button (click)="ftMade(false, 2)">No</ion-button>
-              <h3 *ngIf="ftSuccess.length > 1">Free Throw {{ftSuccess[1]}}</h3>
-            </ion-row>
-          </ion-col>
-        </ion-row>
-        <ion-row *ngIf="typeString == 'Two'">
-          <ion-col>
-            <ion-row>
-              <h3>Free Throw One of Two Made?</h3><br />
-              <ion-button (click)="ftMade(true, 1)">Yes</ion-button>
-              <ion-button (click)="ftMade(false, 1)">No</ion-button>
-              <h3 *ngIf="ftSuccess.length > 0">Free Throw {{ftSuccess[0]}}</h3>
-            </ion-row>
-            <ion-row *ngIf="ftSuccess?.length > 0">
-              <h3>Free Throw Two of Two Made?</h3><br />
-              <ion-button (click)="ftMade(true, 2)">Yes</ion-button>
-              <ion-button (click)="ftMade(false, 2)">No</ion-button>
-              <h3 *ngIf="ftSuccess.length > 1">Free Throw {{ftSuccess[1]}}</h3>
-            </ion-row>
-          </ion-col>
-        </ion-row>
-        <ion-row *ngIf="typeString == 'Three'">
-          <ion-col>
-            <ion-row>
-              <h3>Free Throw One of Three Made?</h3><br />
-              <ion-button (click)="ftMade(true, 1)">Yes</ion-button>
-              <ion-button (click)="ftMade(false, 1)">No</ion-button>
-              <h3 *ngIf="ftSuccess.length > 0">Free Throw {{ftSuccess[0]}}</h3>
-            </ion-row>
-            <ion-row *ngIf="ftSuccess?.length > 0">
-              <h3>Free Throw Two of Three Made?</h3><br />
-              <ion-button (click)="ftMade(true, 2)">Yes</ion-button>
-              <ion-button (click)="ftMade(false, 2)">No</ion-button>
-              <h3 *ngIf="ftSuccess.length > 1">Free Throw {{ftSuccess[1]}}</h3>
-            </ion-row>
-            <ion-row *ngIf="ftSuccess?.length > 1">
-              <h3>Free Throw Three of Three Made?</h3><br />
-              <ion-button (click)="ftMade(true, 3)">Yes</ion-button>
-              <ion-button (click)="ftMade(false, 3)">No</ion-button>
-              <h3 *ngIf="ftSuccess.length > 2">Free Throw {{ftSuccess[2]}}</h3>
-            </ion-row>
-          </ion-col>
-        </ion-row>
-      </ion-col>
-    </ion-row>
-    
-    <ion-row *ngIf="next == 'rebound'">
-      <ion-col>
-        <ion-row><h3>Rebounded By?</h3></ion-row>
-        <ion-row>{{gameService.awayTeam.name}}</ion-row>
-        <ion-row *ngFor="let player of gameService.awayTeam.onCourt">
-          <ion-button (click)="reboundedBy(player, gameService.awayTeam)">{{player.number}}</ion-button>
-        </ion-row>
-        <ion-row>
-          <ion-button (click)="reboundedBy(null, gameService.awayTeam)">{{gameService.awayTeam.name}}</ion-button>
-        </ion-row>
-      </ion-col>
-      <ion-col>
-        <ion-row>{{gameService.homeTeam.name}}</ion-row>
-        <ion-row *ngFor="let player of gameService.homeTeam.onCourt">
-          <ion-button (click)="reboundedBy(player, gameService.homeTeam)">{{player.number}}</ion-button>
-        </ion-row>
-        <ion-row>
-            <ion-button (click)="reboundedBy(null, gameService.homeTeam)">{{gameService.homeTeam.name}}</ion-button>
+      
+    <div *ngIf="freeThrowsReady">
+      <ion-row>
+        <ion-col>
+          <ion-row class="input-query">
+            <ion-label>Shooting {{typeString}}</ion-label>
           </ion-row>
+        </ion-col>
+      </ion-row>
+      <div *ngIf="typeString=='One'">
+        <ion-row>
+          <ion-col>
+            <ion-row class="input-query">
+              <ion-label>Free Throw Made?</ion-label>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-row>
+              <ion-col>
+                <div class="sm-text-button" [ngClass]="{'selected': ftSuccess[0]=='Made'}">
+                  <ion-button (click)="ftMade(true, 1)">Yes</ion-button>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+          <ion-col>
+            <ion-row>
+              <ion-col>
+                <div class="sm-text-button" [ngClass]="{'selected': ftSuccess[0]=='Missed'}">
+                  <ion-button (click)="ftMade(false, 1)">No</ion-button>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>       
+      </div>
+      <div *ngIf="typeString == 'One and One'">
+        <ion-row>
+          <ion-col>
+            <ion-row class="input-query">
+              <ion-label>Front End of Bonus Free Throw Made?</ion-label>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-row>
+              <ion-col>
+                <div class="sm-text-button" [ngClass]="{'selected': ftSuccess[0]=='Made'}">
+                  <ion-button (click)="ftMade(true, 1)">Yes</ion-button>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+          <ion-col>
+            <ion-row>
+              <ion-col>
+                <div class="sm-text-button" [ngClass]="{'selected': ftSuccess[0]=='Missed'}">
+                  <ion-button (click)="ftMade(false, 1)">No</ion-button>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row> 
+        <ion-row *ngIf="madeFrontEnd">
+          <ion-col>
+            <ion-row class="input-query">
+              <ion-label>Second Bonus Free Throw Made?</ion-label>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="madeFrontEnd">
+          <ion-col>
+            <ion-row>
+              <ion-col>
+                <div class="sm-text-button" [ngClass]="{'selected': ftSuccess[1]=='Made'}">
+                  <ion-button (click)="ftMade(true, 2)">Yes</ion-button>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+          <ion-col>
+            <ion-row>
+              <ion-col>
+                <div class="sm-text-button" [ngClass]="{'selected': ftSuccess[1]=='Missed'}">
+                  <ion-button (click)="ftMade(false, 2)">No</ion-button>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </div>
+      <div *ngIf="typeString=='Two'">
+        <ion-row>
+          <ion-col>
+            <ion-row class="input-query">
+              <ion-label>Free Throw One Made?</ion-label>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-row>
+              <ion-col>
+                <div class="sm-text-button" [ngClass]="{'selected': ftSuccess[0]=='Made'}">
+                  <ion-button (click)="ftMade(true, 1)">Yes</ion-button>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+          <ion-col>
+            <ion-row>
+              <ion-col>
+                <div class="sm-text-button" [ngClass]="{'selected': ftSuccess[0]=='Missed'}">
+                  <ion-button (click)="ftMade(false, 1)">No</ion-button>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="ftSuccess?.length > 0">
+          <ion-col>
+            <ion-row class="input-query">
+              <ion-label>Free Throw Two Made?</ion-label>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="ftSuccess?.length > 0">
+          <ion-col>
+            <ion-row>
+              <ion-col>
+                <div class="sm-text-button" [ngClass]="{'selected': ftSuccess[1]=='Made'}">
+                  <ion-button (click)="ftMade(true, 2)">Yes</ion-button>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+          <ion-col>
+            <ion-row>
+              <ion-col>
+                <div class="sm-text-button" [ngClass]="{'selected': ftSuccess[1]=='Missed'}">
+                  <ion-button (click)="ftMade(false, 2)">No</ion-button>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </div>
+      <div *ngIf="typeString=='Three'">
+        <ion-row>
+          <ion-col>
+            <ion-row class="input-query">
+              <ion-label>Free Throw One Made?</ion-label>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-row>
+              <ion-col>
+                <div class="sm-text-button" [ngClass]="{'selected': ftSuccess[0]=='Made'}">
+                  <ion-button (click)="ftMade(true, 1)">Yes</ion-button>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+          <ion-col>
+            <ion-row>
+              <ion-col>
+                <div class="sm-text-button" [ngClass]="{'selected': ftSuccess[0]=='Missed'}">
+                  <ion-button (click)="ftMade(false, 1)">No</ion-button>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="ftSuccess?.length > 0">
+          <ion-col>
+            <ion-row class="input-query">
+              <ion-label>Free Throw Two Made?</ion-label>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="ftSuccess?.length > 0">
+          <ion-col>
+            <ion-row>
+              <ion-col>
+                <div class="sm-text-button" [ngClass]="{'selected': ftSuccess[1]=='Made'}">
+                  <ion-button (click)="ftMade(true, 2)">Yes</ion-button>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+          <ion-col>
+            <ion-row>
+              <ion-col>
+                <div class="sm-text-button" [ngClass]="{'selected': ftSuccess[1]=='Missed'}">
+                  <ion-button (click)="ftMade(false, 2)">No</ion-button>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="ftSuccess?.length > 1">
+          <ion-col>
+            <ion-row class="input-query">
+              <ion-label>Free Throw Three Made?</ion-label>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="ftSuccess?.length > 1">
+          <ion-col>
+            <ion-row>
+              <ion-col>
+                <div class="sm-text-button" [ngClass]="{'selected': ftSuccess[2]=='Made'}">
+                  <ion-button (click)="ftMade(true, 3)">Yes</ion-button>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+          <ion-col>
+            <ion-row>
+              <ion-col>
+                <div class="sm-text-button" ngClass]="{'selected': ftSuccess[2]=='Missed'}">
+                  <ion-button (click)="ftMade(false, 3)">No</ion-button>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </div>
+    </div>
+    <div *ngIf="next=='rebound'">
+      <ion-row>
+        <ion-col>
+          <ion-row class="input-query">
+            <ion-label>Rebounded By?</ion-label>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-row class="team">
+            <ion-label>{{gameService.homeTeam.name}}</ion-label>
+          </ion-row>
+          <ion-row *ngFor="let player of gameService.homeTeam.onCourt" class="ion-align-items-center"
+              [ngClass]="{'selected': player===rebounder}">
+            <ion-col size="2">
+              <div class="number-button">
+                <ion-button (click)="reboundedBy(player, gameService.homeTeam)">{{player.number}}</ion-button>
+              </div>
+            </ion-col>
+            <ion-col>
+              <ion-label>{{player.name}}</ion-label>
+            </ion-col>
+          </ion-row>
+          <ion-row [ngClass]="{'selected': reboundingTeam===gameService.homeTeam && rebounder===null}">
+            <ion-col>
+              <div class="sm-text-button">
+                <ion-button (click)="reboundedBy(null, gameService.homeTeam)">{{gameService.homeTeam.name}}</ion-button>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+        <ion-col>
+          <ion-row class="team">
+            <ion-label>{{gameService.awayTeam.name}}</ion-label>
+          </ion-row>
+          <ion-row *ngFor="let player of gameService.awayTeam.onCourt" class="ion-align-items-center"
+              [ngClass]="{'selected': player===rebounder}">
+            <ion-col size="2">
+              <div class="number-button">
+                <ion-button (click)="reboundedBy(player, gameService.awayTeam)">{{player.number}}</ion-button>
+              </div>
+            </ion-col>
+            <ion-col>
+              <ion-label>{{player.name}}</ion-label>
+            </ion-col>
+          </ion-row>
+          <ion-row [ngClass]="{'selected': reboundingTeam===gameService.awayTeam && rebounder===null}">
+            <ion-col>
+              <div class="sm-text-button">
+                <ion-button (click)="reboundedBy(null, gameService.awayTeam)">{{gameService.awayTeam.name}}</ion-button>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </div> 
+    <ion-row *ngIf="next=='submit' || rebounderSet">
+      <ion-col>
+        <ion-row class="submit-row">
+          <ion-col>
+            <ion-button expand="block" (click)="submit()">Submit</ion-button>
+          </ion-col>
+        </ion-row>
       </ion-col>
-    </ion-row>
-    <ion-row *ngIf="rebounder">
-      Rebounded by: {{reboundingTeam.name}} number {{rebounder.number}}
-    </ion-row>
-    <ion-row *ngIf="next == 'submit'">
-      <ion-button (click)="submit()">Submit</ion-button>
-    </ion-row>
-    <ion-row *ngIf="rebounderSet">
-      <ion-button (click)="submit()">Submit</ion-button>
-    </ion-row>
-    
-
-    
-
-
+    </ion-row> 
+    <ion-row class="ion-justify-content-end">   
+      <ion-col size="auto">
+        <div class="sm-text-button">
+          <ion-button expand="block" (click)="help()">Help</ion-button>
+        </div>
+      </ion-col>
+    </ion-row>    
   </ion-grid>
-
 </ion-content>

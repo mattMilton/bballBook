@@ -1,0 +1,93 @@
+ion-grid {
+    background-color: transparent;
+    font-size: 30px;
+}
+
+ion-button {
+    padding: 0;
+    margin: 0;
+}
+
+ion-row {
+    padding: 0px;
+    margin: 0px;
+    background-color: transparent;
+}
+
+ion-col {
+    padding: 0px;
+}
+
+.mins-column {
+    width: 100%;
+    text-align: end;
+}
+
+.mins-column button {
+    font-size: 30px;
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+    color: white;
+}
+
+.mins-column .pad-right {
+    padding-right: 10px;
+}
+
+.secs-column {
+    width: 100%;
+    text-align: start;
+}
+
+.secs-column button {
+    font-size: 30px;
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+    color: white;
+}
+
+.period-row button {
+    font-size: 30px;
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+    color: white;
+}
+
+@media screen and (max-width: 767px) {
+    ion-grid {
+        font-size: 25px;
+    }
+
+    .mins-column button {
+        font-size: 28px;
+    }
+
+    .secs-column button {
+        font-size: 28px;
+    }
+
+    .period-row button {
+        font-size: 28px;
+    }
+}
+
+@media screen and (max-width: 479px) {
+    ion-grid {
+        font-size: 20px;
+    }
+
+    .mins-column button {
+        font-size: 22px;
+    }
+
+    .secs-column button {
+        font-size: 22px;
+    }
+
+    .period-row button {
+        font-size: 22px;
+    }
+}

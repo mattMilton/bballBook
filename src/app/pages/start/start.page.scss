@@ -1,32 +1,83 @@
-/* Container needed to position the button. Adjust the width as needed */
-.container {
-    position: relative;
-    width: 100%;
-    height: 100%;
+h1 {
+  font-size: 60px;
+  font-weight: bold;
+  font-style: italic;
+  color: red;
+  margin: 15px;
+}
+
+h2 {
+  font-size: 40px;
+  font-weight: bold;
+  color: red;
+  margin: 0 15px 15px 15px;
+}
+
+p {
+  font-size: 23px;
+}
+
+.ball-icon {
+  font-size: 64px;
+  color: rgb(101, 67, 33);
+}
+
+li {
+  list-style-type: none;
+  margin-bottom: 35px;
+}
+
+li .ball-icon {
+  font-size: 20px;
+  margin-right: 20px;
+}
+
+@media screen and (max-width: 767px){
+  h1 {
+    font-size: 50px;
   }
-  
-  /* Make the image responsive */
-  .container img {
-    width: 100%;
-    height: 100%;
+
+  h2 { 
+    font-size: 35px;
   }
-  
-  /* Style the button and place it in the middle of the container/image */
-  .container .btn {
-    position: absolute;
-    top: 80%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    background-color: rgba(100,100,100,.7);
-    color: rgb(27, 2, 2);
-    font-size: 40px;
-    padding: 24px 36px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
+
+  p {
+    font-size: 22px;
   }
-  
-  .container .btn:hover {
-    background-color: black;
+
+  .ball-icon {
+    font-size: 48px;
   }
+
+  li .ball-icon {
+    font-size: 16px;
+    margin-right: 16px;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  h1 {
+    font-size: 35px;
+  }
+
+  h2 {
+    font-size: 25px;
+  }
+
+  p {
+    font-size: 19px;
+  }
+
+  .ball-icon {
+    font-size: 32px;
+  }
+
+  ul {
+    padding: 0 0 0 25px;
+  }
+
+  li .ball-icon {
+    font-size: 12px;
+    margin-right: 12px;
+  }
+}

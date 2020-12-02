@@ -4,11 +4,10 @@ import { PlaysLogService } from 'src/app/services/plays-log.service';
 import { Output, EventEmitter } from '@angular/core';
 import { OnCourtHistoryService } from 'src/app/services/on-court-history.service';
 
-
 @Component({
   selector: 'app-timer',
   templateUrl: './timer.component.html',
-  styleUrls: ['./timer.component.scss'],
+  styleUrls: ['./timer.component.scss']
 })
 export class TimerComponent implements OnInit {
 
@@ -18,7 +17,7 @@ export class TimerComponent implements OnInit {
 
   period: number = 1;
   periodMinutes: number;
-  timeLeft: number = this.periodMinutes * 60;
+  timeLeft: number;
   interval;
   clockRunning: boolean;
 
@@ -42,12 +41,10 @@ export class TimerComponent implements OnInit {
       this.timeLeft = timeData.timeLeft;
     } else {
       this.timeLeft = this.periodMinutes * 60;
-
     }
     
-    this.clockRunning = false;     // to be dealt with, when first hitting start,
-    // clock sets period and time, then needs to be hit again to run clock,
-    // when adding this, bool in conditional operations, another press was needed.
+    this.clockRunning = false;     
+    
   }
 
   startTimer() {
@@ -87,7 +84,7 @@ export class TimerComponent implements OnInit {
             }
           }
         }
-        localStorage.setItem('time', JSON.stringify({period: this.period, timeLeft: this.timeLeft}));
+        localStorage.setItem('time', JSON.stringify({period: this.period, timeLeft: this.timeLeft, running: this.clockRunning}));
       }, 1000);
       
       // if start of a period, emit the event, with period number to parent,
@@ -102,12 +99,13 @@ export class TimerComponent implements OnInit {
       // set clock to running
       this.clockRunning = true;
     } else {
-      this.pauseTimer();
       this.clockRunning = false;
+      this.pauseTimer();
     }
   }
 
   pauseTimer() {
+    // localStorage.setItem('time', JSON.stringify({period: this.period, timeLeft: this.timeLeft, running: this.clockRunning}));
     clearInterval(this.interval);
   }
 
@@ -121,15 +119,18 @@ export class TimerComponent implements OnInit {
       this.timeLeft = this.periodMinutes * 60;
     }
     this.timeChange.emit({ event: event, period: this.period, timeLeft: this.timeLeft });
-    localStorage.setItem('time', JSON.stringify({period: this.period, timeLeft: this.timeLeft}));
+    localStorage.setItem('time', JSON.stringify({period: this.period, timeLeft: this.timeLeft, running: this.clockRunning}));
   }
 
   decMinutes() {
     this.timeLeft -= 60;
+    if (this.timeLeft < 0) {
+      this.timeLeft = 0;
+    }
     if (!this.onCourtHistory.latestOnCourt) {
       this.timeChange.emit({ event: event, period: this.period, timeLeft: this.timeLeft});
     } 
-    localStorage.setItem('time', JSON.stringify({period: this.period, timeLeft: this.timeLeft}));
+    localStorage.setItem('time', JSON.stringify({period: this.period, timeLeft: this.timeLeft, running: this.clockRunning}));
   }
 
   incSeconds() {
@@ -142,7 +143,7 @@ export class TimerComponent implements OnInit {
       this.timeLeft++;
     }
     this.timeChange.emit({ event: event, period: this.period, timeLeft: this.timeLeft });
-    localStorage.setItem('time', JSON.stringify({period: this.period, timeLeft: this.timeLeft}));
+    localStorage.setItem('time', JSON.stringify({period: this.period, timeLeft: this.timeLeft, running: this.clockRunning}));
   }
   
   decSeconds() {
@@ -150,7 +151,7 @@ export class TimerComponent implements OnInit {
       if (!this.onCourtHistory.latestOnCourt) {
         this.timeChange.emit({ event: event, period: this.period, timeLeft: this.timeLeft});
       } 
-      localStorage.setItem('time', JSON.stringify({period: this.period, timeLeft: this.timeLeft}));
+      localStorage.setItem('time', JSON.stringify({period: this.period, timeLeft: this.timeLeft, running: this.clockRunning}));
   }
   
   incPeriod() {
@@ -174,7 +175,7 @@ export class TimerComponent implements OnInit {
     if (!this.onCourtHistory.latestOnCourt) {
       this.timeChange.emit({ event: event, period: this.period, timeLeft: this.timeLeft});
     } 
-    localStorage.setItem('time', JSON.stringify({period: this.period, timeLeft: this.timeLeft}));
+    localStorage.setItem('time', JSON.stringify({period: this.period, timeLeft: this.timeLeft, running: this.clockRunning}));
   }
   
   decPeriod() {
@@ -182,7 +183,7 @@ export class TimerComponent implements OnInit {
       this.period--;
     }
     this.timeChange.emit({ event: event, period: this.period, timeLeft: this.timeLeft});
-    localStorage.setItem('time', JSON.stringify({period: this.period, timeLeft: this.timeLeft}));
+    localStorage.setItem('time', JSON.stringify({period: this.period, timeLeft: this.timeLeft, running: this.clockRunning}));
   }
 
   getMinutes(): number {

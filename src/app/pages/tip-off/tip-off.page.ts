@@ -52,4 +52,8 @@ export class TipOffPage implements OnInit {
     this.gameService.saveGameData();
     this.router.navigate(['/game']);
   }
+
+  help() {
+    this.router.navigate(['/help']);
+  }
 }

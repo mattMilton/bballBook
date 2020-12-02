@@ -30,6 +30,8 @@ export class MadeFgPage implements OnInit {
     this.play.period = +this.route.snapshot.paramMap.get('period');
     this.play.minutes = +this.route.snapshot.paramMap.get('minutes');
     this.play.seconds = +this.route.snapshot.paramMap.get('seconds');
+    
+    console.log("in ngInit");
   }
 
   madeBy(player: Player, team: Team) {
@@ -77,6 +79,14 @@ export class MadeFgPage implements OnInit {
 
     // return to the game page
     this.gameService.saveGameData();
+    this.scorer = null;
+    this.team = null;
+    this.assist = null;
+    this.assisterSet = false;
     this.router.navigate(['/game']);
+  }
+
+  help() {
+    this.router.navigate(['/help']);
   }
 }

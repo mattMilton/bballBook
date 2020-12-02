@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header hidden>
   <ion-toolbar>
     <ion-title>{{pts}} Point Field Goal Made</ion-title>
   </ion-toolbar>
@@ -8,29 +8,91 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <ion-row>{{gameService.awayTeam.name}}</ion-row>
-        <ion-row *ngFor="let player of gameService.awayTeam.onCourt">
-          <ion-button (click)="madeBy(player, gameService.awayTeam)">{{player.number}}</ion-button>
-        </ion-row>
-      </ion-col>
-      <ion-col>
-        <ion-row>{{gameService.homeTeam.name}}</ion-row>
-        <ion-row *ngFor="let player of gameService.homeTeam.onCourt">
-          <ion-button (click)="madeBy(player, gameService.homeTeam)">{{player.number}}</ion-button>
+        <ion-row class="input-query">
+          <ion-label>{{pts}} Point Field Goal Made By?</ion-label>
         </ion-row>
       </ion-col>
     </ion-row>
-    <ion-row *ngIf=(scorer)>Made By: {{team?.name}} Number: {{scorer?.number}}</ion-row>
-    <ion-row *ngIf=(scorer)>Assisted By</ion-row>
-    <ion-row *ngFor="let player of team?.onCourt">
-        <ion-button *ngIf="player != scorer" (click)="assistedBy(player)">{{player.number}}</ion-button>
-      </ion-row>
-      <ion-row *ngIf=(scorer)>
-        <ion-button (click)="assistedBy(null)">Unassisted</ion-button> 
-      </ion-row>
-      <ion-row *ngIf=(assisterSet)>
-        <ion-button (click)="submit()">Submit</ion-button>
-      </ion-row>
-
+    <ion-row>     
+      <ion-col>
+        <ion-row class="team">
+          <ion-label>{{gameService.homeTeam.name}}</ion-label>
+        </ion-row>
+        <ion-row *ngFor="let player of gameService.homeTeam.onCourt" class="ion-align-items-center"
+            [ngClass]="{'selected': player===scorer}">
+          <ion-col size="2">
+            <div class="number-button">
+              <ion-button (click)="madeBy(player, gameService.homeTeam)">{{player.number}}</ion-button>
+            </div>
+          </ion-col>
+          <ion-col>
+            <ion-label>{{player.name}}</ion-label>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+      <ion-col>
+        <ion-row class="team">
+          <ion-label>{{gameService.awayTeam.name}}</ion-label>
+        </ion-row>
+        <ion-row *ngFor="let player of gameService.awayTeam.onCourt" class="ion-align-items-center"
+            [ngClass]="{'selected': player===scorer}">
+          <ion-col size="2">
+            <div class="number-button">
+              <ion-button (click)="madeBy(player, gameService.awayTeam)">{{player.number}}</ion-button>
+            </div>
+          </ion-col>
+          <ion-col>
+            <ion-label>{{player.name}}</ion-label>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf=(scorer)>
+      <ion-col>
+        <ion-row class="input-query">
+          <ion-label>Assisted By?</ion-label>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <div *ngFor="let player of team?.onCourt">
+          <ion-row *ngIf="player != scorer" class="ion-align-items-center"
+              [ngClass]="{'selected': player===assist}">
+            <ion-col size="2">
+              <div class="number-button">
+                <ion-button (click)="assistedBy(player)">{{player.number}}</ion-button>
+              </div>
+            </ion-col>
+            <ion-col>
+              <ion-label>{{player.name}}</ion-label>
+            </ion-col>        
+          </ion-row>
+        </div>
+        <ion-row *ngIf=(scorer) [ngClass]="{'selected': assisterSet && assist===null}">
+          <ion-col>
+            <div class="sm-text-button">
+              <ion-button (click)="assistedBy(null)">Unassisted</ion-button> 
+            </div>
+          </ion-col>
+         </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf=(assisterSet)>
+      <ion-col>
+        <ion-row class="submit-row">
+          <ion-col>
+            <ion-button expand="block" (click)="submit()">Submit</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-justify-content-end">  
+      <ion-col size="auto">
+        <div class="sm-text-button">
+          <ion-button expand="block" (click)="help()">Help</ion-button>
+        </div>
+      </ion-col>
+    </ion-row> 
   </ion-grid>
 </ion-content>

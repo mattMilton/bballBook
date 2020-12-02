@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header hidden>
   <ion-toolbar>
     <ion-title>Substitution</ion-title>
   </ion-toolbar>
@@ -7,42 +7,190 @@
 <ion-content>
   <ion-grid>
     <ion-row>
-      {{team.name}} {{primaryPlayer.name}} {{primaryPlayer.number}}
+      <ion-col>
+        <ion-row class="input-query ion-align-items-center ion-justify-content-center player-detail">
+          <ion-label>{{primaryPlayer.number}}  {{primaryPlayer.name}}</ion-label>
+        </ion-row>
+        <ion-row class="input-query ion-align-items-center ion-justify-content-center player-detail-team">
+          <ion-label>{{team.name}}</ion-label>
+        </ion-row>
+      </ion-col>
     </ion-row>
     <ion-row>
       <ion-col size="8">
-        Points<br>Rebounds<br>Assists<br>Steals<br>Blocks<br>Turnovers<br>Fouls<br>
-        Minutes<br>Technical Fouls<br>Field Goals Makes/Attempts<br>3Pt Field Goals Makes/Attempts<br>
-        Free Throws Makes/Attempts
+        <ion-row class="input-query ion-align-items-center">
+          <ion-label>Points</ion-label>
+        </ion-row>
+        <ion-row class="input-query ion-align-items-center">
+          <ion-label>Rebounds</ion-label>
+        </ion-row>
+        <ion-row class="input-query ion-align-items-center">
+          <ion-label>Assists</ion-label>
+        </ion-row>
+        <ion-row class="input-query ion-align-items-center">
+          <ion-label>Steals</ion-label>
+        </ion-row>
+        <ion-row class="input-query ion-align-items-center">
+          <ion-label>Blocks</ion-label>
+        </ion-row>
+        <ion-row class="input-query ion-align-items-center">
+          <ion-label>Turnovers</ion-label>
+        </ion-row>
+        <ion-row class="input-query ion-align-items-center">
+          <ion-label>Fouls</ion-label>
+        </ion-row>
+        <ion-row class="input-query ion-align-items-center">
+          <ion-label>Minutes</ion-label>
+        </ion-row>
+        <ion-row class="input-query ion-align-items-center">
+          <ion-label>Technical Fouls</ion-label>
+        </ion-row>
+        <ion-row class="input-query ion-align-items-center">
+          <ion-label>FG Makes/Attempts</ion-label>
+        </ion-row>
+        <ion-row class="input-query ion-align-items-center">
+          <ion-label>3PT Makes/Attempts</ion-label>
+        </ion-row>
+        <ion-row class="input-query ion-align-items-center">
+          <ion-label>FT Makes/Attempts</ion-label>
+        </ion-row>
       </ion-col>
       <ion-col>
-        {{primaryPlayer.points}}<br>{{primaryPlayer.offRebounds + primaryPlayer.defRebounds}}<br>
-        {{primaryPlayer.assists}}<br>{{primaryPlayer.steals}}<br>{{primaryPlayer.blocks}}<br>
-        {{primaryPlayer.turnovers}}<br>{{primaryPlayer.fouls}}<br>{{primaryPlayer.minutes}}<br>
-        {{primaryPlayer.technicalFouls}}<br>{{primaryPlayer.fgMakes}}/{{primaryPlayer.fgAttempts}}<br>
-        {{primaryPlayer.thrPtMakes}}/{{primaryPlayer.thrPtAttempts}}<br>
-        {{primaryPlayer.ftMakes}}/{{primaryPlayer.ftAttempts}}
+        <ion-row class="input-query ion-align-items-center ion-justify-content-center">
+          <ion-label>{{primaryPlayer.points}}</ion-label>
+        </ion-row>
+        <ion-row class="input-query ion-align-items-center ion-justify-content-center">
+          <ion-label>{{primaryPlayer.offRebounds + primaryPlayer.defRebounds}}</ion-label>
+        </ion-row>
+        <ion-row class="input-query ion-align-items-center ion-justify-content-center">
+          <ion-label>{{primaryPlayer.assists}}</ion-label>
+        </ion-row>
+        <ion-row class="input-query ion-align-items-center ion-justify-content-center">
+          <ion-label>{{primaryPlayer.steals}}</ion-label>
+        </ion-row>
+        <ion-row class="input-query ion-align-items-center ion-justify-content-center">
+          <ion-label>{{primaryPlayer.blocks}}</ion-label>
+        </ion-row>
+        <ion-row class="input-query ion-align-items-center ion-justify-content-center">
+          <ion-label>{{primaryPlayer.turnovers}}</ion-label>
+        </ion-row>
+        <ion-row class="input-query ion-align-items-center ion-justify-content-center">
+          <ion-label>{{primaryPlayer.fouls}}</ion-label>
+        </ion-row>
+        <ion-row class="input-query ion-align-items-center ion-justify-content-center">
+          <ion-label>{{primaryPlayer.minutes}}</ion-label>
+        </ion-row>
+        <ion-row class="input-query ion-align-items-center ion-justify-content-center">
+          <ion-label>{{primaryPlayer.technicalFouls}}</ion-label>
+        </ion-row>
+        <ion-row class="input-query ion-align-items-center ion-justify-content-center">
+          <ion-label>{{primaryPlayer.fgMakes}}/{{primaryPlayer.fgAttempts}}</ion-label>
+        </ion-row>
+        <ion-row class="input-query ion-align-items-center ion-justify-content-center">
+          <ion-label>{{primaryPlayer.thrPtMakes}}/{{primaryPlayer.thrPtAttempts}}</ion-label>
+        </ion-row>
+        <ion-row class="input-query ion-align-items-center ion-justify-content-center">
+          <ion-label>{{primaryPlayer.ftMakes}}/{{primaryPlayer.ftAttempts}}</ion-label>
+        </ion-row>
       </ion-col>
     </ion-row>
-  </ion-grid>
-  
-  <ion-grid *ngIf='dir == "out"'>
-    <ion-row>Substitute Out for:</ion-row>
-    <ion-row *ngFor="let player of team?.onBench">
-      <ion-button (click)="sub(player)">{{player.number}}</ion-button>
+    <ion-row class="transparent">
+      <ion-col size-xs="12" size-sm="6">
+        <ion-row>
+
+          <ion-col *ngIf='dir=="out"'>
+          
+    
+              <ion-row class="input-query">
+                <ion-label>Substitute Out For:</ion-label>
+              </ion-row>
+              <ion-row *ngFor="let player of team?.onBench" class="ion-align-items-center"
+              [ngClass]="{'selected': player===secondaryPlayer}">
+              <ion-col size="2">
+                <div class="number-button">
+                  <ion-button (click)="sub(player)">{{player.number}}</ion-button>
+                </div>
+              </ion-col>
+              <ion-col>
+                <ion-label>{{player.name}}</ion-label>
+              </ion-col>
+            </ion-row>
+            <ion-row *ngIf='secondaryPlayer'>
+              <ion-col>
+                <ion-button expand="block" (click)="confirmSub()">Confirm</ion-button>
+              </ion-col>
+            </ion-row> 
+         
+          </ion-col>
+          <ion-col *ngIf='dir=="in"'>
+            <ion-row class="input-query">
+              <ion-label>Substitute In For:</ion-label>
+            </ion-row>
+            <ion-row *ngFor="let player of team?.onCourt" class="ion-align-items-center"
+                [ngClass]="{'selected': player===secondaryPlayer}">
+              <ion-col size="2">
+                <div class="number-button">
+                  <ion-button (click)="sub(player)">{{player.number}}</ion-button>
+                </div>
+              </ion-col>
+              <ion-col>
+                <ion-label>{{player.name}}</ion-label>
+              </ion-col>
+            </ion-row>
+            <ion-row *ngIf='secondaryPlayer'>
+              <ion-col>
+                <ion-button expand="block" (click)="confirmSub()">Confirm</ion-button>
+              </ion-col>
+            </ion-row> 
+          </ion-col>
+        </ion-row>
+      </ion-col>
+      <ion-col>
+        <ion-row>
+          <ion-col>
+            <ion-row class="input-query">
+              <ion-label>Edit Player</ion-label>
+            </ion-row>
+            <ion-row class="transparent">
+              <ion-col size="4">
+                <ion-row class="input-query ion-align-items-center in-box">
+                  <ion-label>Number</ion-label>
+                </ion-row>
+              </ion-col>
+              <ion-col> 
+                  <ion-row class="input-query ion-align-items-center in-box">
+                    <ion-input type="number" [(ngModel)]="primaryPlayer.number"></ion-input>
+                  </ion-row>          
+              </ion-col>
+            </ion-row>
+            <ion-row class="transparent">
+              <ion-col size="4">
+                <ion-row class="input-query ion-align-items-center in-box">
+                  <ion-label>Name</ion-label>
+                </ion-row>
+              </ion-col>
+              <ion-col>
+                <ion-row class="input-query ion-align-items-center in-box">
+                  <ion-input [(ngModel)]="primaryPlayer.name"></ion-input>
+                </ion-row>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </ion-col>
     </ion-row>
     <ion-row>
-      <ion-button (click)="noSub()">Do not Sub Out</ion-button>
+      <ion-col>
+        <ion-button expand="block" (click)="noSub()">Back To Game</ion-button>
+      </ion-col>
     </ion-row>
+    <ion-row class="ion-justify-content-end">     
+      <ion-col size="auto">
+        <div class="sm-text-button">
+          <ion-button expand="block" (click)="help()">Help</ion-button>
+        </div>
+      </ion-col>
+    </ion-row> 
   </ion-grid>
-  <ion-grid *ngIf='dir == "in"'>
-    <ion-row>Substitue In for:</ion-row>
-      <ion-row *ngFor="let player of team?.onCourt">
-        <ion-button (click)="sub(player)">{{player.number}}</ion-button>
-      </ion-row>
-      <ion-row>
-        <ion-button (click)="noSub()">Do not Sub In</ion-button>
-      </ion-row>
-    </ion-grid>
 </ion-content>
 

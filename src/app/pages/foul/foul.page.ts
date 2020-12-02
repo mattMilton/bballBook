@@ -16,7 +16,6 @@ export class FoulPage implements OnInit {
 
   fouler: Player;
   team: Team;
-  blocker: Player;
   fouledTeam: string;
   shooting: boolean;
   teamFouls: number;
@@ -55,6 +54,12 @@ export class FoulPage implements OnInit {
   }
 
   submit(){
+    // vars to hold nav parameters so we can set play to new play before navigation
+    var shootingTeam;
+    var per;
+    var mins;
+    var secs;
+
     // set team fouls and personal fouls
     if (this.play.period > this.gameService.periods) {
       this.teamFouls = ++this.team.fouls[this.gameService.periods - 1];
@@ -78,34 +83,95 @@ export class FoulPage implements OnInit {
         // bonus is the minimun value to shoot free throws on non shooting fouls
         if (this.teamFouls >= this.gameService.bonus){
           console.log("shooting free throws over bonus limit ");
-          this.router.navigate(['/free-throws/team-fouls/' + this.fouledTeam + "/" + this.play.period + "/"
-                + this.play.minutes + "/" + this.play.seconds]);
+
+          // reset all page variables
+          this.fouler = null;
+          this.team = null;
+          shootingTeam = this.fouledTeam;
+          this.fouledTeam = null;
+          this.shooting = null;
+          this.teamFouls = null;
+          per = this.play.period;
+          mins = this.play.minutes;
+          secs = this.play.seconds;
+          this.play = new Play();
+
+          this.router.navigate(['/free-throws/team-fouls/' + shootingTeam + "/" + per + "/"
+                + mins + "/" + secs]);
         } else {
           // no free throws not yet to limit
           console.log ("not yet to limit, no free throws");
           // no resulting free-throws return to game page
           this.gameService.saveGameData();
+
+          // reset all page variables
+          this.fouler = null;
+          this.team = null;
+          this.fouledTeam = null;
+          this.shooting = null;
+          this.teamFouls = null;
+          this.play = new Play();
+
           this.router.navigate(['/game']);
         }
       } else {
         // penalty is the minimum value to shoot free throws on non shooting fouls
         if (this.teamFouls >= this.gameService.penalty){
           console.log("shooting free throws over penalty limit");
-          this.router.navigate(['/free-throws/team-fouls/' + this.fouledTeam + "/" + this.play.period + "/"
-                + this.play.minutes + "/" + this.play.seconds]);
+
+          // reset all page variables
+          this.fouler = null;
+          this.team = null;
+          shootingTeam = this.fouledTeam;
+          this.fouledTeam = null;
+          this.shooting = null;
+          this.teamFouls = null;
+          per = this.play.period;
+          mins = this.play.minutes;
+          secs = this.play.seconds;
+          this.play = new Play();
+
+          this.router.navigate(['/free-throws/team-fouls/' + shootingTeam + "/" + per + "/"
+                + mins + "/" + secs]);
         } else {
           // no free throws not yet to limit
           console.log ("not yet to limit, no free throws");
           // no resulting free-throws return to game page
           this.gameService.saveGameData();
+
+          // reset all page variables
+          this.fouler = null;
+          this.team = null;
+          this.fouledTeam = null;
+          this.shooting = null;
+          this.teamFouls = null;
+          this.play = new Play();
+
           this.router.navigate(['/game']);
         }
       }
     } else {
       // shooting foul
-      this.router.navigate(['/free-throws/shooting/' + this.fouledTeam + "/" + this.play.period + "/"
-                + this.play.minutes + "/" + this.play.seconds]);
+
+      // reset all page variables
+      this.fouler = null;
+      this.team = null;
+      shootingTeam = this.fouledTeam;
+      this.fouledTeam = null;
+      this.shooting = null;
+      this.teamFouls = null;
+      per = this.play.period;
+      mins = this.play.minutes;
+      secs = this.play.seconds;
+      this.play = new Play();
+
+      this.router.navigate(['/free-throws/shooting/' + shootingTeam + "/" + per + "/"
+                + mins + "/" + secs]);
     }
 
+  }
+
+  help() {
+    this.router.navigate(['/help']);
   }
 }

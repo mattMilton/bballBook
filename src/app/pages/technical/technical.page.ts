@@ -13,7 +13,7 @@ import { PlaysLogService } from 'src/app/services/plays-log.service';
 })
 export class TechnicalPage implements OnInit {
 
-  player: Player;
+  offender: Player;
   bench: boolean;
   team: Team;
   shootingTeam: string;
@@ -32,7 +32,7 @@ export class TechnicalPage implements OnInit {
   }
 
   technical(player: Player, team: Team){
-    this.player = player;
+    this.offender = player;
     this.team = team;
     this.play.team = team;
 
@@ -56,16 +56,16 @@ export class TechnicalPage implements OnInit {
 
   submit(){
     // increment technical count and log play
-    if (this.player){
-      this.player.technicalFouls++;
-      this.play.extra = "Technical Foul: " + this.player.technicalFouls;
+    if (this.offender){
+      this.offender.technicalFouls++;
+      this.play.extra = "Technical Foul: " + this.offender.technicalFouls;
     } else {
       this.team.benchTechnicals++;
       this.play.extra = "Technical Foul: " + this.team.benchTechnicals;
       console.log("this.player testing false");
     }
 
-    this.play.primary = this.player;
+    this.play.primary = this.offender;
     this.play.type = "Technical Foul";
     this.play.playType = PlayType.TECH;
     this.plays.add(this.play);
@@ -73,5 +73,9 @@ export class TechnicalPage implements OnInit {
     // shooting foul
     this.router.navigate(['/free-throws/technical/' + this.shootingTeam + "/" + this.play.period + "/"
     + this.play.minutes + "/" + this.play.seconds]);
+  }
+
+  help() {
+    this.router.navigate(['/help']);
   }
 }

@@ -66,6 +66,9 @@ export class MissedFgPage implements OnInit {
   }
 
   submit() {
+    // var for stop clock due to team rebound (out of bounds)
+    var whistle = false;  // set to true only if team rebound, but no player
+
     // credit players with their stats
   
     this.attempter.fgAttempts++;
@@ -93,13 +96,13 @@ export class MissedFgPage implements OnInit {
         this.rebounder.offRebounds++;
         this.play.tertiaryType = "Offensive Rebound";
         this.play.tertiary = this.rebounder;
-      }
+      } else {whistle = true;}
     } else {
       if (this.rebounder) {
         this.rebounder.defRebounds++;
         this.play.tertiaryType = "Defensive Rebound";
         this.play.tertiary = this.rebounder;
-      }
+      } else {whistle = true;}
     }
     
     // create and post a plays entry
@@ -109,6 +112,17 @@ export class MissedFgPage implements OnInit {
 
     // return to the game page
     this.gameService.saveGameData();
+
+    // if (whistle) {
+    //   this.router.navigate(['/game', {clock: 'stop'}]);
+    // } else {
+    //   this.router.navigate(['/game']);
+    // }
+
     this.router.navigate(['/game']);
+  }
+
+  help() {
+    this.router.navigate(['/help']);
   }
 }

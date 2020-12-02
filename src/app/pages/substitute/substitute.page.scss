@@ -1,0 +1,16 @@
+.transparent .in-box {
+    padding: 0 10px;
+    height: 46px;
+}
+
+@media screen and (max-width: 767px) {  
+    .transparent .in-box {
+        height: 40px;
+    }
+}
+
+@media screen and (max-width: 479px) {
+    .transparent .in-box {
+        height: 36px;
+    }
+}

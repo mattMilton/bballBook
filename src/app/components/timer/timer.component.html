@@ -1,4 +1,75 @@
-<p>
+<ion-grid>
+  <ion-row>
+    <ion-col>
+      <ion-row>
+        <div class="mins-column">
+          <button class="pad-right" (click)='incMinutes()'>
+            <ion-icon name="arrow-dropup"></ion-icon>
+          </button>
+        </div>
+      </ion-row>
+      <ion-row>
+        <div class="mins-column">
+          <button (click)='startTimer()'>{{getMinutes() | number:'2.0-0'}}:</button>
+        </div>
+      </ion-row>
+      <ion-row>
+        <div class="mins-column">
+          <button class="pad-right" (click)='decMinutes()'>
+            <ion-icon name="arrow-dropdown"></ion-icon>
+          </button>
+        </div>
+      </ion-row>
+    </ion-col>
+    <ion-col >
+      <ion-row>
+        <div class="secs-column">
+          <button (click)='incSeconds()'>
+            <ion-icon name="arrow-dropup"></ion-icon>
+          </button>
+        </div>
+      </ion-row>
+      <ion-row>
+        <div class="secs-column">
+          <button (click)='startTimer()'>{{getSeconds() | number:'2.0-0'}}</button>
+        </div>
+      </ion-row>
+      <ion-row>
+        <div class="secs-column">
+          <button (click)='decSeconds()'>
+            <ion-icon name="arrow-dropdown"></ion-icon>
+          </button>
+        </div>
+      </ion-row>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col class="ion-text-center period-row">
+      <ion-label>Period</ion-label>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col class="ion-text-center">
+      <div class="period-row">
+        <button (click)='decPeriod()'>
+          <ion-icon name="arrow-dropdown"></ion-icon>
+        </button>
+          {{period}}
+        <button (click)='incPeriod()'>
+          <ion-icon name="arrow-dropup"></ion-icon>
+        </button>
+      </div>
+      <!-- {{period}}
+      <div class="period-row">
+        <button (click)='incPeriod()'>
+          <ion-icon name="arrow-dropup"></ion-icon>
+        </button>
+      </div> -->
+    </ion-col>
+  </ion-row>
+</ion-grid>
+
+<!-- <p>
   <button (click)='incMinutes()'>+</button>
   <button (click)='incSeconds()'>+</button>
 </p>
@@ -16,4 +87,4 @@
 <p>Period: {{period}}
   <button (click)='incPeriod()'>+</button>
   <button (click)='decPeriod()'>-</button>
-</p>
+</p> -->

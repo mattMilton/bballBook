@@ -1,0 +1,170 @@
+<ion-header hidden>
+  <ion-toolbar>
+    <ion-title>help</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-row>
+          <h1>General Help Topics</h1>
+        </ion-row>
+        <ion-row>
+          <h3>Selecting Players</h3>
+          <p>When selecting a player from any page, whether answering a query or other reason, 
+            you must hit the button that their number resides in. 
+          </p>
+          <h3>Auto-start and Auto-stop of Time</h3>
+          <p>We have removed the auto-start/auto-stop feature until we have fully inplemented run-time options.
+            Otherwise, in run-time games, the clock being stopped when in event pages results in more time correcting
+            once back in the game page. If you are scoring a game that does have stop-time, you should stop the clock
+            manually when the whistle is blown, then go into the event page. Then remember to start the clock when play
+            resumes. Try to train yourself that any time you hear a whistle, there is a good chance you need to either 
+            start or stop the clock. 
+          </p>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-row>
+          <h1>Page Help Topics</h1>
+        </ion-row>
+        <ion-row>
+          <div>
+            <h2>Game Settings Page</h2>
+            <h3>Team Foul Limits</h3>
+            <p>In the two lines, Team Fouls to Bonus and Team Fouls to Penalty you specify what 
+              type of free throws will be shot at which team foul numbers. If the game you are 
+              scoring uses one-and-one only at a certain team foul number, enter the number in 
+              the Team Fouls to Bonus line, and enter 0 in Team Fouls to Pentaly line. If, 
+              on the other hand, the game only uses shooting two after a certain foul limit, enter
+              the number of fouls needed to shoot two in the Team Fouls to Penalty line, and 0 
+              in Team Fouls to Bonus line. If the game you are scoring uses both limits (like
+              college basketball, 7 and 10), enter numbers in both lines, but the Fouls to Bonus
+              number must be less than Fouls to Penalty. At least one of the two lines must have 
+              a number greater than zero. 
+            </p>
+            <h3>Timeouts</h3>
+            <p>This line is the number of timeouts each team gets per game. If the game you are scoring
+              allows each team a certain number per period, you may want to set this number high, and then record
+              fake timeouts at half or ends of periods to make the number displayed on the scoreboard more accurate
+              towards the end of the game. More fine-grained customization of timeouts is being considered for future versions.
+            </p>
+            <h3>Teams</h3>
+            <p>Each team must have at least 5 players before game can begin. If a team does not have 5 players but 
+              the officials are still allowing the game to begin, we recommend filling the roster with numbers only,
+              and preferrably numbers that will not be used. You can even use numbers such as 100 to make it clear that
+              it is not really a player. Then if/when players show up, you can edit that player from within the game page
+              by clicking on the fake number and turning it into a real player. Or, just add a new player. Editing the 
+              fake player to a real player will result in an inaccurate minute count if the fake player was considered on
+              the court during the game. 
+            </p>
+            <h2>Edit Team Page</h2>
+            <p>This is where you will name teams and add or remove players. You may add players by ony entering their 
+              number, or their number and name. The first five players entered will be considered the starters. If you
+              do not enter the starters first, you will just have to substitute the starters in before starting the game
+              once you get to the game page. There is nothing wrong with doing it this way, it just saves a little time 
+              and keeps the mock substitutions off of the Plays log. 
+            </p>
+            <h2>Game Page</h2>
+            <p>The Game Page has three sections, the scoreboard, the rosters and the plays.</p>
+            <h2>Scoreboard</h2>
+            <p>The scoreboard and the event buttons directly below it are where almost all events are initiatied.</p>
+            <h3>Time Control</h3>
+            <p>
+              You can edit the time and period with the up/down buttons above and below the time and on the side
+              of the period. You would usually only do this to sync up the clock (if it got off by a few seconds), 
+              or to enter an event that had previously been missed. You start and stop the clock by clicking on 
+              the time itself.
+            </p>
+            <h3>Timeouts and Jump Balls</h3>
+            <p>To record a timeout, you click on corresponding team's TOL number on the scoreboard. To record a 
+              jump ball, click on the word POSS on the scoreboard. Erroneously entering either of these events is 
+              easily fixed by deleting the event from the play log. 
+            </p>
+            <h2>Event Buttons</h2>
+            <p>Click any of the seven event buttons to initiate corresponding event. They are almost all 
+              very self-explanatory. All details of the event will be recorded by answering questions in the 
+              resulting page. 
+            </p>
+            <h3>Offensive Fouls and And-1's</h3>
+            <p>To record an offensive foul, go into Turnover page. In the page you will be asked
+              whether the turnover was an offensive foul.</p>
+            <p>If a player makes a shot and is fouled, do 
+              not enter into Made FG page. There is nowhere in Made FG page to report that player was
+              fouled while shooting. Instead, enter Foul page. In the Foul page, you will be able to 
+              respond that the player was fouled while shooting, and that the player made the shot. 
+            </p>
+            <h3>Rebounds</h3>
+            <p>Some events, missed field goals and missing last free throw, result in a rebound. If no player
+              gets the rebound, it should be credited to the team that is rewarded possession. 
+            </p>
+            <h2>Rosters Section</h2>
+            <p>The rosters/players section of the game page shows which players are on the court at any
+              given time and all players basic stats. Clicking on any players number opens up that players
+              details where you can edit the player, substitute the player in or out, and see their detailed
+              stats. 
+            </p>
+            <h3>Add Player</h3>
+            <p>If a player arrives late, or was missed when initially entering players, use button at bottom of 
+              the roster to add a player after game as been initiated. Same as in Game Settings, player must 
+              have a number, but name is optional. 
+            </p>
+            <h2>Plays Log</h2>
+            <p>All events in plays log are deletable or switchable except period start and finish messages. 
+              The tip-offs are switchable, which sets the control of the tip to the opposite team. Any subsequent 
+              jump balls and period starts will then also be corrected as a result of changing tip-off control.
+            </p>
+            <h3>Deleting Fouls</h3>
+            <p>You may delete a foul in the play log, if it is improperly recorded. The system will correct
+              the player and team foul count for all subsequent fouls. But, the system does not remove free
+              throws that resulted from the foul being deleted, or any subsequent fouls that resulted in free 
+              throws. Therefore, you must remove resulting free throws if necessary. This way you are able to 
+              change something about a recorded foul (assister, fouler, etc.) without changing resulting free throws
+              in the event that the play did happen, but it wasn't recorded accurately. In a nutshell, be aware that
+              deleting free throws does not delete free throws, but you may do that manually.  
+            </p>
+            <h2>Foul Page</h2>
+            <h3>Shooting Foul?</h3>
+            <p>After selecting who committed the foul, the page asks if it was a shooting foul. This is only
+              asking if the foul was committed in the act of shooting, not if free throws will result. The 
+              system will determine if free throws will result due to team fouls. 
+            </p>
+            <h2>Free Throws Page</h2>
+            <h3>Defensive Lane Violation</h3>
+            <p>If defensive player enters the lane early, but free throw is made, ignore the 
+              violation, count the free throw as made. If free throw is missed, you should also
+              ignore the violation, as these violations are not tracked statistics. Use the resulting
+              substitute free throw in place of the free throw that is cancelled due to the violation.
+            </p>
+            <h3>Offensive Lane Violation</h3>
+            <p>If any offensive player, including the shooter, commits a violation by entering the lane too early,
+              remove the play from the plays log. Then enter a turnover and charge it to the player who committed 
+              the violation.
+            </p>
+            <h3>Final Free Throw Doesn't Hit the Rim</h3>
+            <p>If a final free throw does not hit the rim, it is a missed free throw and a violation. Since the violation
+              is not a tracked statistic, you can ignore the violation and count the free throw as missed. Unfortunately, 
+              you must select a rebounder in this scenario. Count it as a defensive team rebound. We are looking into 
+              fixing this discrepancy for a future version. 
+            </p>
+            <h2>Player Page</h2>
+            <h3>Substituting</h3>
+            <p>Select player to substitute the player for. Then hit Confirm and not Back to Game. 
+              Back to Game will not process the substitution.
+            </p>
+            <h3>Detail Stats</h3>
+            <p>Statistics are always the cumulation of all stats recorded, regardless of time on clock. 
+              This means, even if you change from third period back to first, stats will show all three
+              periods, not just the first. This is also true of stats in Players section of Game Page.
+            </p>
+          </div>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

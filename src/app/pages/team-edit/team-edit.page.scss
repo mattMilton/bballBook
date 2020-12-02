@@ -1,0 +1,43 @@
+// ion-col ion-row {
+//     height: 55px;
+//     padding: 10px;
+// }
+ion-col .in-label {
+    height: 55px;    
+}
+
+ion-col .top-box {
+    margin: 0 10px 10px 10px;
+}
+
+ion-col .bottom-box {
+    margin: 0 10px 0 10px;
+}
+
+.in-label {
+    padding: 10px;
+}
+
+.in-boxes ion-row {
+    height: 55px;
+    padding: 0 10px;
+}
+
+.player-row {
+    padding: 5px;
+}
+
+.message ion-row {
+    height: auto;
+}
+
+@media screen and (max-width: 767px) {
+
+    ion-col .top-box {
+        margin: 0 7px 7px 7px;
+    }
+
+    ion-col .bottom-box {
+        margin: 0 7px 0 7px;
+    }
+}

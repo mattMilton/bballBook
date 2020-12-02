@@ -1,0 +1,47 @@
+ion-label {
+    margin-top: 40px; // only seems to have effect on ion-label that is direct descendant 
+                        // of ion-row. only case is the separating row between last player
+                        // and add player row. 
+}
+
+.team h1 {
+    font-size: 38px;
+    text-align: center;
+}
+
+.head-row {
+    padding: 10px 0px 10px 5px;
+    background-color: rgba(120, 0, 0, 0.25);
+}
+
+app-plays {
+    width: 100%;
+}
+
+@media screen and (max-width: 767px) {
+    .team h1 {
+        font-size: 26px;
+    }
+
+    .team {
+        padding: 5px;
+    }
+
+    ion-label {
+        margin-top: 20px;
+    }
+
+    .head-row {
+        padding: 5px 0px 5px 5px;
+    }
+}
+
+@media screen and (max-width: 479px) {
+    .team h1 {
+        font-size: 22px;
+    }
+
+    .team {
+        padding: 0;
+    }
+}

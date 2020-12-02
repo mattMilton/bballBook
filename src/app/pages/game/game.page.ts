@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { GameService } from 'src/app/services/game.service';
 import { Team } from 'src/app/model/team';
 import { Player } from 'src/app/model/player';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TimerComponent } from 'src/app/components/timer/timer.component';
 import { SubType } from 'src/app/model/substitution';
 import { Play, PlayType } from 'src/app/model/play';
@@ -39,17 +39,19 @@ export class GamePage implements OnInit {
     public gameService: GameService,
     public router: Router,
     public plays: PlaysLogService,
-    public onCourtHistory: OnCourtHistoryService
+    public onCourtHistory: OnCourtHistoryService,
+    private route: ActivatedRoute
   ) {
-    console.log("in game page constructor.....maybe already constructed all three services");
+    
    }
 
-
-  // everything in ngOnInit is for testing only for generating teams automatically
-  // except at the end, the subLog should log a SUB_IN for all starters
   ngOnInit() {
     
     console.log("inside game's onInit");
+    // let clock = this.route.snapshot.paramMap.get('clock');
+    // if (clock === 'stop') {
+    //   this.scoreboardReference.stopClock();
+    // }
     
     // assign scoreboard's timerReference to this page's timerReference
     this.timerReference = this.scoreboardReference.timerReference;
@@ -140,7 +142,7 @@ export class GamePage implements OnInit {
       this.plays.timeOut(play);
       this.gameService.saveGameData();
 
-      this.scoreboardReference.stopClock();
+      // this.scoreboardReference.stopClock();
     }
   }
 
@@ -160,7 +162,7 @@ export class GamePage implements OnInit {
     this.plays.jumpBall(play);
     this.gameService.saveGameData();
 
-    this.scoreboardReference.stopClock();
+    // this.scoreboardReference.stopClock();
   }
 
   deletePlay($event) {
@@ -342,7 +344,7 @@ export class GamePage implements OnInit {
     this.minutes = this.timerReference.getMinutes();
     this.seconds = this.timerReference.getSeconds();
     this.updateMinutesAll();
-    this.scoreboardReference.stopClock();
+    // this.scoreboardReference.stopClock();      // after run-time implementation
     this.router.navigate(['/foul/' + this.period + '/' + this.minutes + '/' + this.seconds]);
   }
 
@@ -351,7 +353,7 @@ export class GamePage implements OnInit {
     this.minutes = this.timerReference.getMinutes();
     this.seconds = this.timerReference.getSeconds();
     this.updateMinutesAll();
-    this.scoreboardReference.stopClock();
+    // this.scoreboardReference.stopClock();  // after run-time
     this.router.navigate(['/technical/' + this.period + '/' + this.minutes + '/' + this.seconds]);
   }
 
@@ -399,5 +401,13 @@ export class GamePage implements OnInit {
         this.gameService.periods, this.gameService.overtimeMinutes);
     });
 
+  }
+
+  gameSettings() {
+    this.router.navigate(['/game-setup']);
+  }
+  
+  help() {
+    this.router.navigate(['/help']);
   }
 }

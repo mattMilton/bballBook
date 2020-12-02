@@ -1,40 +1,92 @@
-<ion-header>
+<ion-header hidden>
   <ion-toolbar>
     <ion-title>Technical Foul</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <p>Technical Fouls are tracked, but maximum number of technicals before ejection is not
-    enforced in the program. If rules dictate that a player is ejected after a certain number
-    of technical fouls, check the game log to determine if this threshold has been reached.
-  </p>
   <ion-grid>
+    
     <ion-row>
       <ion-col>
-        <ion-row>{{gameService.awayTeam.name}}</ion-row>
-        <ion-row *ngFor="let player of gameService.awayTeam.onCourt">
-          <ion-button (click)="technical(player, gameService.awayTeam)">{{player.number}}</ion-button>
-        </ion-row>
-        <ion-row>
-          <ion-button (click)="technical(null, gameService.awayTeam)">Coach/Bench</ion-button>
-        </ion-row>
-      </ion-col>
-      <ion-col>
-        <ion-row>{{gameService.homeTeam.name}}</ion-row>
-        <ion-row *ngFor="let player of gameService.homeTeam.onCourt">
-          <ion-button (click)="technical(player, gameService.homeTeam)">{{player.number}}</ion-button>
-        </ion-row>
-        <ion-row>
-          <ion-button (click)="technical(null, gameService.homeTeam)">Coach/Bench</ion-button>
+        <ion-row class="input-query">
+          <ion-label>Technical Foul On?</ion-label>
         </ion-row>
       </ion-col>
     </ion-row>
-    <ion-row *ngIf="player">Technical Foul On: {{team?.name}} Number: {{player?.number}}<br />
-      <ion-button (click)="submit()">Submit</ion-button>
-    </ion-row>  
-    <ion-row *ngIf="bench">Tecnical Foul On: {{team?.name}} Bench<br />
-      <ion-button (click)="submit()">Submit</ion-button>
-    </ion-row>  
+    <ion-row>
+      <ion-col>
+        <ion-row class="team">
+          <ion-label>{{gameService.homeTeam.name}}</ion-label>
+        </ion-row>
+        <ion-row *ngFor="let player of gameService.homeTeam.onCourt" class="ion-align-items-center"
+            [ngClass]="{'selected': player===offender}">
+            <ion-col size="2">
+              <div class="number-button">
+                <ion-button (click)="technical(player, gameService.homeTeam)">{{player.number}}</ion-button>
+              </div>
+            </ion-col>
+            <ion-col>
+            <ion-label>{{player.name}}</ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-row [ngClass]="{'selected': bench==true && team==gameService.homeTeam}">
+          <ion-col>
+            <div class="sm-text-button">
+              <ion-button (click)="technical(null, gameService.homeTeam)">Coach/Bench</ion-button>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+      <ion-col>
+        <ion-row class="team">
+          <ion-label>{{gameService.awayTeam.name}}</ion-label>
+        </ion-row>
+        <ion-row *ngFor="let player of gameService.awayTeam.onCourt" class="ion-align-items-center"
+        [ngClass]="{'selected': player===offender}">
+          <ion-col size="2">
+            <div class="number-button">
+              <ion-button (click)="technical(player, gameService.awayTeam)">{{player.number}}</ion-button>
+            </div>
+          </ion-col>
+          <ion-col>
+            <ion-label>{{player.name}}</ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-row [ngClass]="{'selected': bench==true && team==gameService.awayTeam}">
+          <ion-col>
+            <div class="sm-text-button">
+              <ion-button (click)="technical(null, gameService.awayTeam)">Coach/Bench</ion-button>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="offender || bench">
+      <ion-col>
+        <ion-row class="submit-row">
+          <ion-col>
+            <ion-button expand="block" (click)="submit()">Submit</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row> 
+    <ion-row>
+      <ion-col>
+        <ion-row>
+          <p>Technical Fouls are tracked, but maximum number of technicals before ejection is not
+            enforced in the program. If rules dictate that a player is ejected after a certain number
+            of technical fouls, check the game log to determine if this threshold has been reached.
+          </p>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-justify-content-end">     
+      <ion-col size="auto">
+        <div class="sm-text-button">
+          <ion-button expand="block" (click)="help()">Help</ion-button>
+        </div>
+      </ion-col>
+    </ion-row>
   </ion-grid>
 </ion-content>

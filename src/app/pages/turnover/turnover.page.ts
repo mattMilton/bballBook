@@ -13,7 +13,7 @@ import { Player } from 'src/app/model/player';
 })
 export class TurnoverPage implements OnInit {
 
-  player: Player;
+  committer: Player;
   team: Team;
   offensive: boolean;
   stealer: Player;
@@ -33,7 +33,7 @@ export class TurnoverPage implements OnInit {
   }
 
   turnoverBy(player: Player, team: Team){
-    this.player = player;
+    this.committer = player;
     this.team = team;
     this.play.team = team;
 
@@ -63,17 +63,20 @@ export class TurnoverPage implements OnInit {
   }
 
   submit(){
+
+    // var for navigation parameter
+    var whistle = true;  // set to false only if steal
+
     // credit players their stats
 
-    this.player.turnovers++;
-    this.play.primary = this.player;
-
+    this.committer.turnovers++;
+    this.play.primary = this.committer;
     if (this.offensive){
       this.play.type = "Offensive Foul";
       this.play.playType = PlayType.OFFENSIVE_FOUL;
-      this.player.fouls++;
-      this.play.extra = "Personal Foul: " + this.player.fouls;
-      if (this.player.fouls >= this.gameService.maxPersonalFouls){
+      this.committer.fouls++;
+      this.play.extra = "Personal Foul: " + this.committer.fouls;
+      if (this.committer.fouls >= this.gameService.maxPersonalFouls){
         this.play.extra += " FOULED OUT";
       }
     } else {
@@ -84,6 +87,7 @@ export class TurnoverPage implements OnInit {
         this.play.secondary = this.stealer;
         this.play.secondaryType = "Stolen";
         this.stealer.steals++;
+        whistle = false;
       }
     }
 
@@ -95,6 +99,24 @@ export class TurnoverPage implements OnInit {
 
     // return to the game page
     this.gameService.saveGameData();
+    this.committer = null;
+    this.team = null;
+    this.offensive = null;
+    this.stealer = null;
+    this.stealerTeam = null;
+    this.stealerSet = null;
+    this.play = new Play();
+
+    // if (whistle) {
+    //   this.router.navigate(['/game', {clock: 'stop'}]);
+    // } else {
+    //   this.router.navigate(['/game']);
+    // }
+
     this.router.navigate(['/game']);
+  }
+
+  help() {
+    this.router.navigate(['/help']);
   }
 }

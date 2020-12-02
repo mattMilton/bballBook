@@ -21,8 +21,8 @@ export class GameService {
   teamFouls: TeamFouls;
   maxPersonalFouls: number = 5;
   technicals: number = 1;
-  awayTeam: Team;
-  homeTeam: Team;
+  awayTeam: Team = new Team("Away Team");
+  homeTeam: Team = new Team("Home Team");
   possArrow: Team;
   overtimePeriods: number = 0;
   overtimeMinutes: number = 5;
@@ -59,59 +59,64 @@ export class GameService {
       this.homeTeam.buildFromPlainObject(gameData.homeTeam);
 
       // set possession arrow 
-      if (gameData.possArrow.name == this.awayTeam.name) {
-        this.possArrow = this.awayTeam;
-        console.log("assigned possArrow to awayTeam");
-      } 
-      if (gameData.possArrow.name == this.homeTeam.name) {
-        this.possArrow = this.homeTeam;
-        console.log("assigned possArrow to homeTeam");
+      if (gameData.possArrow) {
+        if (gameData.possArrow.name == this.awayTeam.name) {
+          this.possArrow = this.awayTeam;
+          console.log("assigned possArrow to awayTeam");
+        } 
+        if (gameData.possArrow.name == this.homeTeam.name) {
+          this.possArrow = this.homeTeam;
+          console.log("assigned possArrow to homeTeam");
+        }
       }
   
       // i believe all team and player objects have been properly rebuilt 
       // need to rebuild entire play log next
 
       // also while iterating plays, plays needs to check for period and tip messages
-      for (let i = 0; i < this.plays.playsData.length; i++) {
-        let playData = this.plays.playsData[i];
-        console.log("play message: " + playData.message);
-        // make new play
-        let play: Play = new Play();
-  
-        // set all primitive types from playData in newly created object
-        play.setPrimData(playData);
-  
-        // Determine and set references to all objects in play
-        // first teams
-        if (playData.team) {
-          if (playData.team.name == this.awayTeam.name) {
-            play.team = this.awayTeam;
-            play.otherTeam = this.homeTeam;
-          } else {
-            play.team = this.homeTeam;
-            play.otherTeam = this.awayTeam;
-          }
-        }
-  
-        // then players
-        if (play.team) {
-          for (let p = 0; p < play.team.roster.length; p++){
-            if (playData.primary && playData.primary.number == play.team.roster[p].number) {
-              play.primary = play.team.roster[p];
+      if (this.plays.playsData) {
+
+        for (let i = 0; i < this.plays.playsData.length; i++) {
+          let playData = this.plays.playsData[i];
+          console.log("play message: " + playData.message);
+          // make new play
+          let play: Play = new Play();
+          
+          // set all primitive types from playData in newly created object
+          play.setPrimData(playData);
+          
+          // Determine and set references to all objects in play
+          // first teams
+          if (playData.team) {
+            if (playData.team.name == this.awayTeam.name) {
+              play.team = this.awayTeam;
+              play.otherTeam = this.homeTeam;
             } else {
-              if (playData.secondary && playData.secondary.number == play.team.roster[p].number) {
-                play.secondary = play.team.roster[p];
+              play.team = this.homeTeam;
+              play.otherTeam = this.awayTeam;
+            }
+          }
+          
+          // then players
+          if (play.team) {
+            for (let p = 0; p < play.team.roster.length; p++){
+              if (playData.primary && playData.primary.number == play.team.roster[p].number) {
+                play.primary = play.team.roster[p];
               } else {
-                if (playData.tertiary && playData.tertiary.number == play.team.roster[p].number) {
-                  play.tertiary = play.team.roster[p];
+                if (playData.secondary && playData.secondary.number == play.team.roster[p].number) {
+                  play.secondary = play.team.roster[p];
+                } else {
+                  if (playData.tertiary && playData.tertiary.number == play.team.roster[p].number) {
+                    play.tertiary = play.team.roster[p];
+                  }
                 }
               }
             }
           }
+          
+          // push to plays.plays
+          this.plays.plays.push(play);
         }
-  
-        // push to plays.plays
-        this.plays.plays.push(play);
 
         // and give playsLogService number of periods
         this.plays.setPeriods(this.periods);
@@ -149,15 +154,15 @@ export class GameService {
   }
  
   saveTeam(team: Team, aOrH: Loc) {
-    const nTeam = new Team(team.name);
-    nTeam.roster = team.roster;
-    if (aOrH === Loc.AWAY) {
-      this.awayTeam = nTeam;
-    } else {
-      this.homeTeam = nTeam;
-    }
-    console.log(this.awayTeam);
-    console.log(this.homeTeam);
+    // const nTeam = new Team(team.name);
+    // nTeam.roster = team.roster;
+    // if (aOrH === Loc.AWAY) {
+    //   this.awayTeam = nTeam;
+    // } else {
+    //   this.homeTeam = nTeam;
+    // }
+    // console.log(this.awayTeam);
+    // console.log(this.homeTeam);
     this.saveGameData();
   }
 

@@ -1,4 +1,135 @@
-<h3>{{gameService.awayTeam.name}}</h3>
+<ion-grid>
+  <ion-row>
+    <ion-col>
+      <div class="team">
+        <p>{{gameService.homeTeam.name}}</p>
+        <p>{{gameService.homeTeam.points}}</p>
+      </div>
+    </ion-col>
+    <ion-col>
+      <app-timer (periodStart)="periodStartParent($event)" (timeChange)="timeChangeParent($event)"></app-timer>
+    </ion-col>
+    <ion-col>  
+      <div class="team">
+        <p>{{gameService.awayTeam.name}}</p>
+        <p>{{gameService.awayTeam.points}}</p> 
+      </div>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <div class="fouls">
+        <p *ngIf="timerReference.period <= gameService.periods">{{gameService.homeTeam.fouls[timerReference.period - 1]}}</p>
+        <p *ngIf="timerReference.period > gameService.periods">{{gameService.homeTeam.fouls[gameService.periods -1]}}</p>
+        <p>Fouls</p>
+      </div>
+    </ion-col>
+    <ion-col>
+      <div class="timeouts">
+        <button (click)="timeOut('home')">{{gameService.homeTeam.timeouts}}</button>
+        <p>TOL</p>
+      </div>
+    </ion-col>
+    <ion-col>
+      <div class="shooting">
+        <div *ngIf="gameService.bonus > 0 && gameService.penalty == 0" class="bonus">
+          <p *ngIf="timerReference.period <= gameService.periods 
+                && gameService.awayTeam.fouls[timerReference.period - 1] + 1 >= gameService.bonus">
+              BON</p>
+          <P *ngIf="timerReference.period > gameService.periods &&
+              gameService.awayTeam.fouls[gameService.periods - 1] + 1 >= gameService.bonus">
+              BON</P>
+        </div>
+        <div *ngIf="gameService.bonus == 0 && gameService.penalty > 0" class="penalty">
+          <p *ngIf="timerReference.period <= gameService.periods 
+                && gameService.awayTeam.fouls[timerReference.period - 1] + 1 >= gameService.penalty">
+              PEN</p>
+          <P *ngIf="timerReference.period > gameService.periods &&
+              gameService.awayTeam.fouls[gameService.periods - 1] + 1 >= gameService.penalty">
+              PEN</P>
+        </div>
+        <div *ngIf="gameService.bonus > 0 && gameService.penalty > 0" class="both">
+          <p *ngIf="timerReference.period <= gameService.periods 
+              && gameService.awayTeam.fouls[timerReference.period - 1] + 1 >= gameService.penalty">
+              PEN</p>
+          <P *ngIf="timerReference.period > gameService.periods &&
+              gameService.awayTeam.fouls[gameService.periods - 1] + 1 >= gameService.penalty">
+              PEN</P>
+          <p *ngIf="timerReference.period <= gameService.periods 
+              && gameService.awayTeam.fouls[timerReference.period - 1] + 1 >= gameService.bonus
+              && gameService.awayTeam.fouls[timerReference.period - 1] + 1 < gameService.penalty">
+              BON</p>
+          <P *ngIf="timerReference.period > gameService.periods &&
+              gameService.awayTeam.fouls[gameService.periods - 1] + 1 >= gameService.bonus
+              && gameService.awayTeam.fouls[gameService.periods - 1] + 1 < gameService.penalty">
+              BON</P>
+        </div>
+      </div>
+    </ion-col>
+    <ion-col size="3">
+      <div>
+        <ion-icon *ngIf="gameService.possArrow == gameService.homeTeam" name="arrow-back"></ion-icon>
+        <ion-icon *ngIf="gameService.possArrow == gameService.awayTeam" name="arrow-forward" class="dark"></ion-icon>
+        <button (click)="jumpBall()">POSS</button>
+        <ion-icon *ngIf="gameService.possArrow == gameService.awayTeam" name="arrow-forward"></ion-icon>
+        <ion-icon *ngIf="gameService.possArrow == gameService.homeTeam" name="arrow-back" class="dark"></ion-icon>
+      </div>
+    </ion-col>
+    <ion-col>
+      <div class="shooting">
+        <div *ngIf="gameService.bonus > 0 && gameService.penalty == 0" class="bonus">
+          <p *ngIf="timerReference.period <= gameService.periods 
+                && gameService.homeTeam.fouls[timerReference.period - 1] + 1 >= gameService.bonus">
+              BON</p>
+          <P *ngIf="timerReference.period > gameService.periods &&
+              gameService.homeTeam.fouls[gameService.periods - 1] + 1 >= gameService.bonus">
+              BON</P>
+        </div>
+        <div *ngIf="gameService.bonus == 0 && gameService.penalty > 0" class="penalty">
+          <p *ngIf="timerReference.period <= gameService.periods 
+                && gameService.homeTeam.fouls[timerReference.period - 1] + 1 >= gameService.penalty">
+              PEN</p>
+          <P *ngIf="timerReference.period > gameService.periods &&
+              gameService.homeTeam.fouls[gameService.periods - 1] + 1 >= gameService.penalty">
+              PEN</P>
+        </div>
+        <div *ngIf="gameService.bonus > 0 && gameService.penalty > 0" class="both">
+          <p *ngIf="timerReference.period <= gameService.periods 
+              && gameService.homeTeam.fouls[timerReference.period - 1] + 1 >= gameService.penalty">
+              PEN</p>
+          <P *ngIf="timerReference.period > gameService.periods &&
+              gameService.homeTeam.fouls[gameService.periods - 1] + 1 >= gameService.penalty">
+              PEN</P>
+          <p *ngIf="timerReference.period <= gameService.periods 
+              && gameService.homeTeam.fouls[timerReference.period - 1] + 1 >= gameService.bonus
+              && gameService.homeTeam.fouls[timerReference.period - 1] + 1 < gameService.penalty">
+              BON</p>
+          <P *ngIf="timerReference.period > gameService.periods &&
+              gameService.homeTeam.fouls[gameService.periods - 1] + 1 >= gameService.bonus
+              && gameService.hommeTeam.fouls[gameService.periods - 1] + 1 < gameService.penalty">
+              BON</P>
+        </div>
+      </div>
+    </ion-col>
+    <ion-col>
+      <div class="timeouts">
+        <button (click)="timeOut('away')">{{gameService.awayTeam.timeouts}}</button>
+        <p>TOL</p>
+      </div>
+    </ion-col>
+    <ion-col>
+      <div class="fouls">
+        <p *ngIf="timerReference.period <= gameService.periods">{{gameService.awayTeam.fouls[timerReference.period - 1]}}</p>
+        <p *ngIf="timerReference.period > gameService.periods">{{gameService.awayTeam.fouls[gameService.periods -1]}}</p>
+        <p>Fouls</p>
+      </div>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+
+
+
+<!-- <h3>{{gameService.awayTeam.name}}</h3>
 <h3>{{gameService.awayTeam.points}}</h3>
 <h1>TOL</h1>
 <button (click)="timeOut('away')"><h1>{{gameService.awayTeam.timeouts}}</h1></button>
@@ -6,7 +137,6 @@
 <h1 *ngIf="timerReference.period <= gameService.periods">{{gameService.awayTeam.fouls[timerReference.period - 1]}}</h1>
 <h1 *ngIf="timerReference.period > gameService.periods">{{gameService.awayTeam.fouls[gameService.periods - 1]}}</h1>
 
-<app-timer (periodStart)="periodStartParent($event)" (timeChange)="timeChangeParent($event)"></app-timer>
 
 <h1 *ngIf="gameService.possArrow == gameService.awayTeam">Away</h1>
 <button (click)="jumpBall()">Possession</button>
@@ -20,7 +150,7 @@
 <h1 *ngIf="timerReference.period <= gameService.periods">{{gameService.homeTeam.fouls[timerReference.period - 1]}}</h1>
 <h1 *ngIf="timerReference.period > gameService.periods">{{gameService.homeTeam.fouls[gameService.periods - 1]}}</h1>
 
-<h1>{{mostRecentLineups}}</h1>
+<h1>{{mostRecentLineups}}</h1> -->
 
 <!-- <ion-content>
   <ion-grid>

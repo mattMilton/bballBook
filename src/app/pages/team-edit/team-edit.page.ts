@@ -66,9 +66,11 @@ export class TeamEditPage implements OnInit {
       this.team.roster.sort((a,b) => a.number-b.number);
       // add to starting roster til full then to bench
       if (this.team.onCourt.length < 5) {
+        console.log("in condition adding player to onCourt");
         this.team.onCourt.push(playerToAdd);
         this.team.onCourt.sort((a,b) => a.number-b.number);
       } else {
+        console.log("in condition adding player to onBench");
         this.team.onBench.push(playerToAdd);
         this.team.onBench.sort((a,b) => a.number-b.number);
       }
@@ -89,5 +91,9 @@ export class TeamEditPage implements OnInit {
   saveTeam() {
     this.game.saveTeam(this.team, this.aOrH);
     this.router.navigate(['/game-setup']);
+  }
+
+  help() {
+    this.router.navigate(['/help']);
   }
 }

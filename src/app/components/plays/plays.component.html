@@ -1,26 +1,40 @@
-<div *ngIf="plays.plays.length">
-
-  <h2>Plays</h2>
-
-  <ion-grid>
+<ion-grid>
+  <ion-row *ngIf="plays.plays.length">
+    <ion-col class="head">
+      <h1>Plays</h1>
+    </ion-col>
+  </ion-row>
     <!-- These rows are for future version, planning on having tabs to select period from which 
       to see play log... see more info in .ts file
       <ion-row>
-      
+        
         <ion-button (click)="selectPeriod(0)">All</ion-button>
+        
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-button *ngFor='let period of periodsArr' (click)="selectPeriod(period)"> {{period}} 
+          </ion-button>
+        </ion-col>
+        
+      </ion-row> -->
+  <ion-row *ngFor='let play of plays.plays' align-items-center class="message-row">
+    <ion-col size="11">
+      <ion-label>{{play.message}}</ion-label>
+    </ion-col> 
+    <ion-col size="1">
+      <div class="remove-button">
+
       
-    </ion-row>
-    <ion-row>
-          <ion-col>
-            <ion-button *ngFor='let period of periodsArr' (click)="selectPeriod(period)"> {{period}} 
-            </ion-button>
-            </ion-col>
-
-    </ion-row> -->
-    <ion-row *ngFor='let play of plays.plays'> {{play.message}} 
-      <ion-button *ngIf="play.deletable == true" (click)="delete(play)">Remove</ion-button>
-      <ion-button *ngIf="play.type == 'Tip-Off'" (click)="toggle(play)">Toggle</ion-button>
-    </ion-row>
-  </ion-grid>
-
-</div>
+        <ion-button *ngIf="play.deletable == true" (click)="delete(play)">
+          <ion-icon name="close"></ion-icon>
+        </ion-button>
+        <ion-button *ngIf="play.type == 'Tip-Off'" expand="block" (click)="toggle(play)">
+          <ion-icon name="swap"></ion-icon>  
+        </ion-button>
+      </div>
+    </ion-col> 
+  </ion-row>
+</ion-grid>
+    
+    

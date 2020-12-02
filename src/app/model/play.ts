@@ -45,22 +45,25 @@ export class Play {
     periodMessage(status: string) {
         this.message = status + " of Period " + this.period;
         if (status == "Start" && this.team) {
-            this.message += " " + this.team.name + " starts with the ball.";
+            this.message += " " + this.team.name + " Starts with the Ball.";
         }
     }
 
     setMessage() {
-        this.deletable = true; // andy type that uses this method is deletable
+        this.deletable = true; // any type that uses this method is deletable
     
         this.message = this.minutes.toString() + ":"; 
         
         if (this.seconds < 10) {
             this.message += "0"
         }
-        this.message += this.seconds.toString() + " " + this.team.name + " " + this.type + " by: "; 
+        this.message += this.seconds.toString() + " " + this.team.name + " " + this.type + " by "; 
 
         if (this.primary) {
-            this.message += this.primary.number;
+            this.message += "#" + this.primary.number;
+            if (this.primary.name) {
+                this.message += " " + this.primary.name;
+            }
         } else {
             // so far only condition without a primary player is technical foul on bench
             if (this.type == "Technical Foul"){
@@ -76,19 +79,25 @@ export class Play {
         }
 
         if (this.secondary) {
-            this.message += " " + this.secondaryType + " by: " + this.secondary.number;
+            this.message += ", " + this.secondaryType + " by #" + this.secondary.number;
+            if (this.secondary.name) {
+                this.message += " " + this.secondary.name;
+            }
         }
 
         if (this.tertiary) {
-            this.message += " " + this.tertiaryType + " by: " + this.tertiary.number;
+            this.message += ", " + this.tertiaryType + " by #" + this.tertiary.number;
+            if (this.tertiary.name) {
+                this.message += " " + this.tertiary.name;
+            }
         }
 
         if (this.extra) {
-            this.message += " " + this.extra;
+            this.message += ", " + this.extra;
         }
 
         if (this.extraTF) {
-            this.message += " " + this.extraTF;
+            this.message += ", " + this.extraTF;
         }
     }
 
@@ -99,14 +108,23 @@ export class Play {
         if (this.seconds < 10) {
             this.message += "0";
         }
-        this.message += this.seconds.toString() + " " + this.team.name + " Substitutes " + this.primary.number + 
-            " in for " + this.secondary.number;
+        this.message += this.seconds.toString() + " " + this.team.name + " Substitutes #" + this.primary.number; 
+        
+        if (this.primary.name) {
+            this.message += " " + this.primary.name; + " in for "
+        }
+
+        this.message += " in for #" + this.secondary.number;
+
+        if (this.secondary.name) {
+            this.message += " " + this.secondary.name;
+        }
     }
 
     tipControlMessage() {
         this.type = "Tip-Off";
         this.priority = 1;
-        this.message = this.minutes.toString() + ":00 Tip-off controlled by " + this.team.name;
+        this.message = this.minutes.toString() + ":00 Tip-off Controlled by " + this.team.name;
     }
 
     jumpBallMessage() {
@@ -129,7 +147,7 @@ export class Play {
         if (this.seconds < 10) {
             this.message += "0";
         }
-        this.message += this.seconds.toString() + " Timeout taken by " + this.team.name; 
+        this.message += this.seconds.toString() + " Timeout Taken by " + this.team.name; 
     }
 
     changeTeam() {
